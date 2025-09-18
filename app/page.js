@@ -1,102 +1,115 @@
-import Image from "next/image";
+// app/page.tsx  (Next.js 13+ App Router)
+// or pages/index.js (Next.js Pages Router)
 
-export default function Home() {
+"use client";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+export default function HomePage() {
+  // ----- Slider -----
+  const slides = [
+    { img: "/images/images.jpeg", caption: "Say No To Drugs" },
+    { img: "/images/anti2.jpg", caption: "Choose Health Over Drugs" },
+    { img: "/images/anti3.jpg", caption: "Drug-Free Life, Healthy Life" },
+  ];
+
+  const [current, setCurrent] = useState(0);
+  const length = slides.length;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [length]);
+
+  // ----- Doctor Cards -----
+  const doctors = [
+    {
+      id: 1,
+      name: "Dr. John Smith",
+      specialty: "Cardiologist",
+      img: "/images/doctor1.jpg",
+    },
+    {
+      id: 2,
+      name: "Dr. Emily Johnson",
+      specialty: "Neurologist",
+      img: "/images/doctor2.jpg",
+    },
+    {
+      id: 3,
+      name: "Dr. Rahul Sharma",
+      specialty: "Orthopedic Surgeon",
+      img: "/images/doctor3.jpg",
+    },
+  ];
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen bg-gray-100">
+      {/* Header / Navbar */}
+      <header className="bg-purple-700 text-white p-4 shadow-md">
+        <div className="container mx-auto flex justify-between items-center">
+          <h1 className="text-xl font-bold">Drug Management System</h1>
+          <nav className="space-x-6">
+            <Link href="/homepage" className="hover:text-yellow-300">Home</Link>
+         <Link href="/admin" className="hover:text-yellow-300">Admin</Link>
+            <Link href="#" className="hover:text-yellow-300">Appointments</Link>
+            <Link href="#" className="hover:text-yellow-300">Reports</Link>
+            <Link href="/login" className="hover:text-yellow-300">Login</Link>
+          </nav>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </header>
+
+      {/* Hero Section with Slider */}
+      <section className="relative w-full h-[400px] overflow-hidden shadow bg-white">
+        {slides.map((slide, idx) => (
+          <div
+            key={idx}
+            className={`absolute inset-0 transition-opacity duration-1000  ${
+              idx === current ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <img
+              src={slide.img}
+              alt={slide.caption}
+              className="w-full h-full object-cover bg-white"
+            />
+            <div className="absolute inset-0 bg-white text-purple bg-opacity-50 flex items-center justify-center">
+              <h2 className="text-purple text-3xl md:text-5xl font-bold">
+                {slide.caption}
+              </h2>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {/* Doctors Section */}
+      <section className="container mx-auto px-6 py-12">
+        <h3 className="text-2xl font-semibold mb-6 text-center">Our Doctors</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {doctors.map((doc) => (
+            <div
+              key={doc.id}
+              className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center"
+            >
+              <img
+                src={doc.img}
+                alt={doc.name}
+                className="w-32 h-32 rounded-full object-cover mb-4"
+              />
+              <h4 className="text-lg font-bold text-gray-800">{doc.name}</h4>
+              <p className="text-gray-600 mb-4">{doc.specialty}</p>
+              <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow">
+                Book Appointment
+              </button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-purple-700 text-white text-center py-4 mt-10">
+        <p>© 2025 Drug Management System | All Rights Reserved</p>
       </footer>
     </div>
   );
