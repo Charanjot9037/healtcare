@@ -1,15 +1,27 @@
-// app/admin/patients/page.tsx  (Next.js 13+ App Router)
-// or pages/admin/patients.js   (Next.js Pages Router)
+
 
 "use client";
 import { useState } from "react";
-
+import { useEffect } from "react";
 export default function AdminPatients() {
-  const [patients, setPatients] = useState([
-    { id: 1, name: "Amit Kumar", mobile: "9876543210", age: 30, disease: "Fever", status: "Admitted" },
-    { id: 2, name: "Sara Ali", mobile: "8765432109", age: 25, disease: "Cough", status: "Discharged" },
-    { id: 3, name: "Michael John", mobile: "7654321098", age: 40, disease: "Diabetes", status: "Admitted" },
-  ]);
+  const [patients, setPatients] = useState([]);
+
+useEffect(() => {
+    const fetchpaitent = async () => {
+      try {
+        const res = await fetch("/api/paitents");
+        const data = await res.json();
+        console.log(data);
+        setPatients(data);
+      } catch (err) {
+        console.error("Error fetching doctors:", err);
+      }
+    };
+    fetchpaitent();
+  }, []);
+
+
+
 
   // Delete handler
 //   const deletePatient = (id: number) => {
@@ -39,29 +51,19 @@ export default function AdminPatients() {
               <th>Mobile</th>
               <th>Age</th>
               <th>Disease</th>
-              <th>Status</th>
+            
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {patients.map((pat) => (
               <tr key={pat.id} className="border-b">
-                <td className="py-2">{pat.id}</td>
+                <td className="py-4">{pat.id}</td>
                 <td>{pat.name}</td>
-                <td>{pat.mobile}</td>
+                <td>{pat.contact}</td>
                 <td>{pat.age}</td>
                 <td>{pat.disease}</td>
-                <td>
-                  <span
-                    className={`px-2 py-1 rounded text-xs ${
-                      pat.status === "Admitted"
-                        ? "bg-green-100 text-green-600"
-                        : "bg-yellow-100 text-yellow-600"
-                    }`}
-                  >
-                    {pat.status}
-                  </span>
-                </td>
+               
                 <td>
                   <button
                     onClick={() => deletePatient(pat.id)}

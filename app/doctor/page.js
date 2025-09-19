@@ -1,14 +1,28 @@
 
 "use client";
 import { useState } from "react";
-
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 export default function AdminDoctors() {
-  const [doctors, setDoctors] = useState([
-    { id: 1, name: "Dr. John Smith", mobile: "9876543210", charge: 2000, status: "Online" },
-    { id: 2, name: "Dr. Emily Johnson", mobile: "8765432109", charge: 2500, status: "Offline" },
-    { id: 3, name: "Dr. Rahul Sharma", mobile: "7654321098", charge: 1800, status: "Online" },
-  ]);
+  const [doctors, setDoctors] = useState([]);
+
+useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const res = await fetch("/api/doctors");
+        const data = await res.json();
+        setDoctors(data);
+        console.log(data);
+      } catch (err) {
+        console.error("Error fetching doctors:", err);
+      }
+    };
+    fetchDoctors();
+  }, []);
+
+
+
+
 
 
 
@@ -31,22 +45,22 @@ const router=useRouter();
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left border-b text-gray-600">
-              <th className="py-2">ID</th>
+              {/* <th className="py-2">sr.no</th> */}
               <th>Name</th>
               <th>Mobile</th>
               <th>Consultancy Charge</th>
-              <th>Status</th>
+              {/* <th>Status</th> */}
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {doctors.map((doc) => (
               <tr key={doc.id} className="border-b">
-                <td className="py-2">{doc.id}</td>
-                <td>{doc.name}</td>
+                {/* <td className="py-4">{doc.id}</td> */}
+                <td className="py-4">{doc.name}</td>
                 <td>{doc.mobile}</td>
-                <td>₹{doc.charge}</td>
-                <td>
+                <td>₹{doc.fees}</td>
+                {/* <td>
                   <span
                     className={`px-2 py-1 rounded text-xs ${
                       doc.status === "Online"
@@ -56,7 +70,7 @@ const router=useRouter();
                   >
                     {doc.status}
                   </span>
-                </td>
+                </td> */}
                 <td>
                   <button
                     onClick={() => deleteDoctor(doc.id)}
