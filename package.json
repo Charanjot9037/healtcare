@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@lottiefiles/dotlottie-react": "^0.17.1",
     "@zegocloud/zego-uikit-prebuilt": "^2.16.0",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.7.0",
