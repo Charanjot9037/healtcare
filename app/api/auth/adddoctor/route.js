@@ -1,40 +1,31 @@
 import dbConnect from "@/app/lib/config/db";
 import Doctor from "@/app/lib/models/Doctor";
+import { NextResponse } from "next/server";
 
-export default async function handler(req, res) {
-  await dbConnect();
+export  async function POST(req) {
+ 
+     const {
+name, mobile,degree,fees,licenseNumber,gender,specialization,imageUrl,} = await req.json();
+       if (!name||!mobile||!degree||!fees||!licenseNumber||!gender||!specialization||!imageUrl){
+          return NextResponse.json({message:"something missing"},{status:200})
+       }
+       console.log("hello");
+ await dbConnect();
+ const existinguser= await Doctor.findOne({name})
+ if(existinguser){
+  return NextResponse.json({success:"false"},{error:'already registered'},{status:404});
+ }
 
-  if (req.method === "POST") {
-    try {
-      const {
-        name,
-        mobile,
-        degree,
-        fees,
-        licenseNumber,
-        gender,
-        specialization,
-        imageUrl,
-      } = req.body;
-      const newDoctor = new Doctor({
-        name,
-        mobile,
-        degree,
-        fees,
-        licenseNumber,
-        gender,
-        specialization,
-        imageUrl,
-      });
-
-      await newDoctor.save();
-
-      res.status(201).json({ success: true, doctor: newDoctor });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, error: "Server error" });
-    }
-  } else {
-    res.status(405).json({ success: false, error: "Method not allowed" });
-  }
-}
+ 
+  const newDoctor = await Doctor.create({
+    name,
+    mobile,
+    degree,
+    fees,
+    licenseNumber,
+    gender,
+    specialization,
+    imageUrl,
+  });
+    return NextResponse.json({success:'true'},{status:200});
+    } 

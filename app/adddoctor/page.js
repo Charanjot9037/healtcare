@@ -1,8 +1,9 @@
 "use client";
-
+import {Loader2} from "lucide-react"
 import React, { useState } from "react";
-
+import { uploadToCloudinary } from "../lib/config/uploadToCloudiary";
 const AddDoctorPage = () => {
+  const[loading,setLoading]=useState(false);
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -10,47 +11,59 @@ const AddDoctorPage = () => {
     fees: "",
     licenseNumber: "",
     gender: "",
-    image: null,
+    image:"",
     specialization: "",
   });
+const changeFileHandler = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Prepare payload excluding image file - handle image upload separately if needed
-    const {
-      name,
-      mobile,
-      degree,
-      fees,
-      licenseNumber,
-      gender,
-      specialization,
-    } = formData;
-
-    const payload = {
-      name,
-      mobile,
-      degree,
-      fees,
-      licenseNumber,
-      gender,
-      specialization,
-      imageUrl: "", // update with image URL after upload if implemented
-    };
+    setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/adddoctor", {
+      const url = await uploadToCloudinary(file);
+      setFormData((prev) => ({ ...prev, image: url }));
+
+      console.log(url);
+
+      alert("File uploaded successfully");
+    } catch (err) {
+      console.error(err);
+  
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();  
+
+    try {
+      const res = await fetch("/api/auth/adddoctor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+
+name:formData?.name,
+    mobile:formData?.mobile,
+    degree:formData?.degree,
+    fees:formData?.fees,
+    licenseNumber:formData?.licenseNumber,
+    gender:formData?.gender,
+    imageUrl:formData?.image,
+    specialization:formData?.specialization,
+
+
+
+
+
+        }),
       });
 
-      const result = await response.json();
+      const result = await res.json();
 
-      if (response.ok) {
+      if (result.succes="true") {
         alert("Doctor added successfully!");
         setFormData({
           name: "",
@@ -63,6 +76,7 @@ const AddDoctorPage = () => {
           specialization: "",
         });
       } else {
+        console.log(result)
         alert("Failed to add doctor: " + result.error);
       }
     } catch (error) {
@@ -84,7 +98,7 @@ const AddDoctorPage = () => {
       <div className="bg-white shadow-md rounded-lg p-8 max-w-4xl w-full">
         <h2 className="text-3xl font-semibold mb-6 text-gray-900">Add New Doctor</h2>
         <form
-          onSubmit={handleSubmit}
+    
           className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6"
         >
           <div className="flex flex-col">
@@ -215,7 +229,7 @@ const AddDoctorPage = () => {
               name="image"
               type="file"
               accept="image/*"
-              onChange={handleChange}
+              onChange={changeFileHandler}
               className="bg-white"
             />
             {formData.image && (
@@ -230,9 +244,10 @@ const AddDoctorPage = () => {
 
           <button
             type="submit"
+            onClick={ handleSubmit}
             className="w-full md:col-span-2 bg-purple-700 hover:bg-purple-800 text-white font-semibold py-3 rounded transition"
           >
-            Add Doctor
+            {loading?<Loader2 className="animate-spin"></Loader2>:"Add"}
           </button>
         </form>
       </div>

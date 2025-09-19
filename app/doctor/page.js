@@ -1,8 +1,7 @@
-// app/admin/doctors/page.tsx  (Next.js 13+ App Router)
-// or pages/admin/doctors.js   (Next.js Pages Router)
 
 "use client";
 import { useState } from "react";
+
 import { useRouter } from "next/navigation";
 export default function AdminDoctors() {
   const [doctors, setDoctors] = useState([
@@ -11,10 +10,7 @@ export default function AdminDoctors() {
     { id: 3, name: "Dr. Rahul Sharma", mobile: "7654321098", charge: 1800, status: "Online" },
   ]);
 
-  // Delete handler
-//   const deleteDoctor = (id: number) => {
-//     setDoctors(doctors.filter((doc) => doc.id !== id));
-//   };
+
 
 const router=useRouter();
   return (
