@@ -1,165 +1,190 @@
-// app/admin/appointments/page.tsx (Next.js 13+ App Router)
-// or pages/admin/appointments.js (Next.js Pages Router)
+
+
 
 "use client";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 export default function AppointmentManagement() {
+  const searchParams = useSearchParams();
+  const doctorName = searchParams.get("name");
+  const specialization = searchParams.get("specialization");
+  const imageUrl = searchParams.get("imageUrl");
+  const doctorId = searchParams.get("id");
+
   const [formData, setFormData] = useState({
-    id: "",
     firstName: "",
     lastName: "",
     email: "",
     mobile: "",
-    nic: "",
     dob: "",
     gender: "",
     appointmentDate: "",
     appointmentTime: "",
-    department: "",
-    doctor: "",
     address: "",
+    doctorId,
   });
 
-// handleChange for all inputs, selects, textareas
-const handleChange = (e) => {
-  setFormData({ ...formData, [e.target.name]: e.target.value });
-};
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-// handleAction for buttons
-const handleAction = (action) => {
-  alert(`${action} clicked!\n\n` + JSON.stringify(formData, null, 2));
-};
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Appointment Submitted!\n\n" + JSON.stringify(formData, null, 2));
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="bg-white shadow rounded-xl p-6">
-        <h1 className="text-2xl font-bold mb-6 text-purple-800">Appointment Management</h1>
-
-        {/* Top Bar */}
-        <div className="flex flex-wrap gap-4 mb-6 items-center ">
-          <button
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-700 to-gray-500 text-white shadow hover:opacity-90"
-            onClick={() => handleAction("Generate Report")}
-          >
-            Get Appointments
-          </button>
-  
+    <div className="min-h-screen bg-gray-100 p-6 flex justify-center items-start">
+      <div className="bg-white shadow-lg rounded-2xl p-8 max-w-3xl w-full">
+        {/* Page Heading */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-purple-700">Book Your Appointment</h1>
+          <p className="text-gray-600 mt-2">Fill in your details below to confirm an appointment with your doctor.</p>
         </div>
 
-        {/* Form Fields */}
-        <div className="text-black grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <input
-            type="text"
-            name="firstName"
-            placeholder="First Name"
-            value={formData.firstName}
-            onChange={handleChange}
-            className="border  rounded-lg px-3 py-2 focus:outline-purple-500"
-          />
-          <input
-            type="text"
-            name="lastName"
-            placeholder="Last Name"
-            value={formData.lastName}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2 focus:outline-purple-500"
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2 focus:outline-purple-500"
-          />
-          <input
-            type="text"
-            name="mobile"
-            placeholder="Mobile Number"
-            value={formData.mobile}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2 focus:outline-purple-500"
-          />
-          <input
-            type="text"
-            name="nic"
-            placeholder="NIC"
-            value={formData.nic}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2 focus:outline-purple-500"
-          />
-          <input
-            type="date"
-            name="dob"
-            placeholder="Date of Birth"
-            value={formData.dob}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2 focus:outline-purple-500"
-          />
-          <select
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2 focus:outline-purple-500"
-          >
-            <option value="">Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-          <input
-            type="date"
-            name="appointmentDate"
-            placeholder="Appointment Date"
-            value={formData.appointmentDate}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2 focus:outline-purple-500"
-          />
-          <input
-            type="time"
-            name="appointmentTime"
-            placeholder="Appointment Time"
-            value={formData.appointmentTime}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2 focus:outline-purple-500"
-          />
-          <select
-            name="department"
-            value={formData.department}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2 focus:outline-purple-500"
-          >
-            <option value="">Department Name</option>
-            <option value="Cardiology">Cardiology</option>
-            <option value="Neurology">Neurology</option>
-            <option value="Orthopedics">Orthopedics</option>
-          </select>
-          <select
-            name="doctor"
-            value={formData.doctor}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2 focus:outline-purple-500"
-          >
-            <option value="">Doctor Name</option>
-            <option value="Dr. John Smith">Dr. John Smith</option>
-            <option value="Dr. Emily Johnson">Dr. Emily Johnson</option>
-            <option value="Dr. Rahul Sharma">Dr. Rahul Sharma</option>
-          </select>
+        {/* Doctor Info Card */}
+        <div className="flex items-center gap-4 border rounded-xl p-4 mb-8 bg-purple-50">
+          {imageUrl && (
+            <Image
+              src={imageUrl}
+              alt={doctorName}
+              width={100}
+              height={100}
+              className="rounded-lg object-cover shadow-md"
+            />
+          )}
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800">{doctorName}</h2>
+            <p className="text-purple-600">{specialization}</p>
+          </div>
         </div>
+
+        {/* Appointment Form */}
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
+          {/* First Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+            <input
+              type="text"
+              name="firstName"
+              placeholder="Enter your first name"
+              value={formData.firstName}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200"
+              required
+            />
+          </div>
+
+          {/* Last Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+            <input
+              type="text"
+              name="lastName"
+              placeholder="Enter your last name"
+              value={formData.lastName}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200"
+              required
+            />
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200"
+              required
+            />
+          </div>
+
+          {/* Mobile */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
+            <input
+              type="text"
+              name="mobile"
+              placeholder="Enter your mobile number"
+              value={formData.mobile}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200"
+              required
+            />
+          </div>
+
+          {/* DOB */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+            <input
+              type="date"
+              name="dob"
+              value={formData.dob}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200"
+            />
+          </div>
+
+          {/* Gender */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+            <select
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200"
+            >
+              <option value="">Select gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          {/* Appointment Date */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Appointment Date</label>
+            <input
+              type="date"
+              name="appointmentDate"
+              value={formData.appointmentDate}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200"
+              required
+            />
+          </div>
+
+          {/* Appointment Time */}
+        
+        </form>
 
         {/* Address */}
-        <textarea
-          name="address"
-          placeholder="Address"
-          value={formData.address}
-          onChange={handleChange}
-          className="w-full text-black border rounded-lg px-3 py-2 mb-6 focus:outline-purple-500"
-          rows={3}
-        />
+        <div className="mt-6">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+          <textarea
+            name="address"
+            placeholder="Enter your complete address"
+            value={formData.address}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200 text-black"
+            rows={3}
+          />
+        </div>
 
-       
+        {/* Submit Button */}
+        <button
+          type="submit"
+          onClick={handleSubmit}
+          className="mt-8 w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold shadow-md transition"
+        >
+          Confirm Appointment
+        </button>
       </div>
     </div>
   );
