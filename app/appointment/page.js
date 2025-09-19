@@ -1,6 +1,5 @@
 
 
-
 "use client";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -21,7 +20,6 @@ export default function AppointmentManagement() {
     dob: "",
     gender: "",
     appointmentDate: "",
-    appointmentTime: "",
     address: "",
     doctorId,
   });
@@ -30,10 +28,35 @@ export default function AppointmentManagement() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("Appointment Submitted!\n\n" + JSON.stringify(formData, null, 2));
-  };
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await fetch("/api/appointments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...formData,
+        doctorName,
+        specialization,
+      }),
+    });
+
+    if (res.ok) {
+      const result = await res.json();
+      alert("✅ Appointment booked successfully!");
+      console.log(result);
+      // you can redirect to success page:
+      // router.push("/appointment/success");
+    } else {
+      alert("❌ Failed to book appointment");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("❌ Something went wrong");
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex justify-center items-start">
@@ -160,7 +183,7 @@ export default function AppointmentManagement() {
             />
           </div>
 
-          {/* Appointment Time */}
+         
         
         </form>
 
