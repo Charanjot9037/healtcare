@@ -3,7 +3,7 @@
 
 "use client";
 import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 export default function AdminDoctors() {
   const [doctors, setDoctors] = useState([
     { id: 1, name: "Dr. John Smith", mobile: "9876543210", charge: 2000, status: "Online" },
@@ -16,14 +16,15 @@ export default function AdminDoctors() {
 //     setDoctors(doctors.filter((doc) => doc.id !== id));
 //   };
 
+const router=useRouter();
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gray-100 p-6 text-black" >
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Doctors Management</h1>
         <button
           className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow transition"
-          onClick={() => alert("Add Doctor Modal/Functionality here")}
+          onClick={() => router.push("/adddoctor")}
         >
           + Add Doctor
         </button>

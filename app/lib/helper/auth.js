@@ -1,0 +1,17 @@
+import jwt from "jsonwebtoken";
+
+export function createAccessToken(user) {
+  return jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "1m" }
+  );
+}
+
+export function createRefreshToken(user) {
+  return jwt.sign(
+    { id: user._id },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: "7d" }
+  );
+}

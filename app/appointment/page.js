@@ -35,10 +35,10 @@ const handleAction = (action) => {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="bg-white shadow rounded-xl p-6">
-        <h1 className="text-2xl font-bold mb-6">Appointment Management</h1>
+        <h1 className="text-2xl font-bold mb-6 text-purple-800">Appointment Management</h1>
 
         {/* Top Bar */}
-        <div className="flex flex-wrap gap-4 mb-6 items-center">
+        <div className="flex flex-wrap gap-4 mb-6 items-center ">
           <button
             className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-700 to-gray-500 text-white shadow hover:opacity-90"
             onClick={() => handleAction("Generate Report")}
@@ -49,14 +49,14 @@ const handleAction = (action) => {
         </div>
 
         {/* Form Fields */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div className="text-black grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <input
             type="text"
             name="firstName"
             placeholder="First Name"
             value={formData.firstName}
             onChange={handleChange}
-            className="border rounded-lg px-3 py-2 focus:outline-purple-500"
+            className="border  rounded-lg px-3 py-2 focus:outline-purple-500"
           />
           <input
             type="text"
@@ -155,7 +155,7 @@ const handleAction = (action) => {
           placeholder="Address"
           value={formData.address}
           onChange={handleChange}
-          className="w-full border rounded-lg px-3 py-2 mb-6 focus:outline-purple-500"
+          className="w-full text-black border rounded-lg px-3 py-2 mb-6 focus:outline-purple-500"
           rows={3}
         />
 

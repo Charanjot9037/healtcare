@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 const dashboard  = () => {
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="min-h-screen bg-gray-100 flex text-black">
       {/* Sidebar */}
       <aside className="w-64 bg-gradient-to-b from-purple-700 to-purple-500 text-white p-5 space-y-6">
         <h2 className="text-xl font-bold">HEAL WELL</h2>
@@ -23,6 +23,7 @@ const dashboard  = () => {
              <Link href="/doctor" className="block hover:bg-purple-600 p-2 rounded-lg">Doctor</Link>
               <Link href="/pharmacy" className="block hover:bg-purple-600 p-2 rounded-lg">Pharmacy</Link>
                <Link href="/paitents" className="block hover:bg-purple-600 p-2 rounded-lg">Paitent</Link>
+               
         </div>
       </aside>
 
@@ -41,7 +42,7 @@ const dashboard  = () => {
             { title: "Total Doctors", value: 20 },
 
           ].map((card, i) => (
-            <div key={i} className="bg-white shadow rounded-xl p-4 text-center">
+            <div key={i} className="bg-white text-black shadow rounded-xl p-4 text-center">
               <p className="text-xl font-bold">{card.value}</p>
               <p className="text-gray-500">{card.title}</p>
             </div>
