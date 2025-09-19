@@ -1,4 +1,3 @@
-
 "use client";
 import Image from "next/image";
 import Link from "next/link";
@@ -40,7 +39,51 @@ export default function HomePage() {
     fetchDoctors();
   }, []);
 
-  // ----- Appointments (dummy for now) -----
+  // ----- User & Appointments -----
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser); // ✅ parse JSON
+        console.log("Logged in user:", parsedUser.name);
+        setUser(parsedUser);
+      } catch (err) {
+        console.error("Error parsing user from localStorage:", err);
+      }
+    }
+  }, []);
+console.log(user?.id);
+const[app,setapp]=useState("");
+  useEffect(() => {
+    const fetchAppointment = async () => {
+      if (!user?.id) return; // wait until user is set
+
+      try {
+        const res = await fetch("/api/userappointment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({user}), // ✅ send only id
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch appointments");
+        }
+
+        const data = await res.json();
+        setapp(data.appointments)
+        console.log(app)
+        console.log("User appointments:", data.appointments);
+      } catch (err) {
+        console.error("Error fetching appointments:", err);
+      }
+    };
+
+    fetchAppointment();
+  }, [user]);
+
+  // ----- Dummy Appointment Data -----
   const appointment = [
     {
       appointmentId: "A1001",
@@ -96,11 +139,21 @@ export default function HomePage() {
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-xl font-bold">Heal Well</h1>
           <nav className="space-x-6">
-            <Link href="/homepage" className="hover:text-yellow-300">Home</Link>
-            <Link href="/admin" className="hover:text-yellow-300">Admin</Link>
-            <Link href="/userappnt/jot" className="hover:text-yellow-300">Appointments</Link>
-            <Link href="#" className="hover:text-yellow-300">Reports</Link>
-            <Link href="/login" className="hover:text-yellow-300">Login</Link>
+            <Link href="/homepage" className="hover:text-yellow-300">
+              Home
+            </Link>
+            <Link href="/admin" className="hover:text-yellow-300">
+              Admin
+            </Link>
+            <Link href="/userappnt/jot" className="hover:text-yellow-300">
+              Appointments
+            </Link>
+            <Link href="#" className="hover:text-yellow-300">
+              Reports
+            </Link>
+            <Link href="/login" className="hover:text-yellow-300">
+              Login
+            </Link>
           </nav>
         </div>
       </header>
@@ -165,26 +218,20 @@ export default function HomePage() {
                 <h4 className="text-lg font-bold text-gray-800">{doc.name}</h4>
                 <p className="text-gray-600 mb-2">{doc.specialization}</p>
                 <p className="text-gray-500 mb-4">Fees: ₹{doc.fees}</p>
-                {/* <Link
-                  href="/appointment"
+                <Link
+                  href={{
+                    pathname: "/appointment",
+                    query: {
+                      name: doc.name,
+                      specialization: doc.specialization,
+                      imageUrl: doc.imageUrl,
+                      id: doc._id,
+                    },
+                  }}
                   className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow"
                 >
                   Book Appointment
-                </Link> */}
-                <Link
-                   href={{
-                   pathname: "/appointment",
-                 query: {
-                   name: doc.name,
-                  specialization: doc.specialization,
-                 imageUrl: doc.imageUrl,
-                  id: doc._id,
-    },
-  }}
-  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow"
->
-  Book Appointment
-</Link>
+                </Link>
               </div>
             ))
           )}
@@ -229,7 +276,11 @@ export default function HomePage() {
                     disabled={pat.status !== "Confirmed"}
                     onClick={() => router.push("/meeting")}
                     className={`bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded-lg text-xs shadow transition
-                      ${pat.status !== "Confirmed" ? "opacity-50 cursor-not-allowed" : ""}`}
+                      ${
+                        pat.status !== "Confirmed"
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      }`}
                   >
                     Join
                   </button>

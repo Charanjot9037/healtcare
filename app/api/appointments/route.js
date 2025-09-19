@@ -6,7 +6,7 @@ export async function POST(req) {
   try {
     await dbConnect();
     const data = await req.json();
-
+console.log("route",data);
     const newAppointment = await Appointment.create(data);
 
     return NextResponse.json(

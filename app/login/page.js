@@ -82,7 +82,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                minLength={6}
+                minLength={2}
                 disabled={loading}
                 placeholder="••••••••"
                 className="w-full px-4 py-3 mt-2 border border-purple-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 hover:scale-[1.02] transition-transform duration-200 hover:shadow-md disabled:opacity-50"

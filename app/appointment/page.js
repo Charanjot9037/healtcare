@@ -1,11 +1,19 @@
 
-
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 export default function AppointmentManagement() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   const searchParams = useSearchParams();
   const doctorName = searchParams.get("name");
   const specialization = searchParams.get("specialization");
@@ -21,50 +29,59 @@ export default function AppointmentManagement() {
     gender: "",
     appointmentDate: "",
     address: "",
-    doctorId,
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const res = await fetch("/api/appointments", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+    if (!user?.id) {
+      alert("⚠️ User not found. Please log in again.");
+      return;
+    }
+
+    try {
+      const payload = {
         ...formData,
+        doctorId,       // attach doctor id here
+        userID: user.id, // attach user id here
         doctorName,
         specialization,
-      }),
-    });
+      };
 
-    if (res.ok) {
-      const result = await res.json();
-      alert("✅ Appointment booked successfully!");
-      console.log(result);
-      // you can redirect to success page:
-      // router.push("/appointment/success");
-    } else {
-      alert("❌ Failed to book appointment");
+      const res = await fetch("/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        const result = await res.json();
+        alert("✅ Appointment booked successfully!");
+        console.log(result);
+      } else {
+        alert("❌ Failed to book appointment");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("❌ Something went wrong");
     }
-  } catch (error) {
-    console.error(error);
-    alert("❌ Something went wrong");
-  }
-};
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex justify-center items-start">
       <div className="bg-white shadow-lg rounded-2xl p-8 max-w-3xl w-full">
         {/* Page Heading */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-purple-700">Book Your Appointment</h1>
-          <p className="text-gray-600 mt-2">Fill in your details below to confirm an appointment with your doctor.</p>
+          <h1 className="text-3xl font-bold text-purple-700">
+            Book Your Appointment
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Fill in your details below to confirm an appointment with your doctor.
+          </p>
         </div>
 
         {/* Doctor Info Card */}
@@ -85,10 +102,15 @@ export default function AppointmentManagement() {
         </div>
 
         {/* Appointment Form */}
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black"
+        >
           {/* First Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              First Name
+            </label>
             <input
               type="text"
               name="firstName"
@@ -102,7 +124,9 @@ export default function AppointmentManagement() {
 
           {/* Last Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Last Name
+            </label>
             <input
               type="text"
               name="lastName"
@@ -116,7 +140,9 @@ export default function AppointmentManagement() {
 
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email Address
+            </label>
             <input
               type="email"
               name="email"
@@ -130,7 +156,9 @@ export default function AppointmentManagement() {
 
           {/* Mobile */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Mobile Number
+            </label>
             <input
               type="text"
               name="mobile"
@@ -144,7 +172,9 @@ export default function AppointmentManagement() {
 
           {/* DOB */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Date of Birth
+            </label>
             <input
               type="date"
               name="dob"
@@ -156,7 +186,9 @@ export default function AppointmentManagement() {
 
           {/* Gender */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Gender
+            </label>
             <select
               name="gender"
               value={formData.gender}
@@ -172,7 +204,9 @@ export default function AppointmentManagement() {
 
           {/* Appointment Date */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Appointment Date</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Appointment Date
+            </label>
             <input
               type="date"
               name="appointmentDate"
@@ -182,14 +216,13 @@ export default function AppointmentManagement() {
               required
             />
           </div>
-
-         
-        
         </form>
 
         {/* Address */}
         <div className="mt-6">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Address
+          </label>
           <textarea
             name="address"
             placeholder="Enter your complete address"
