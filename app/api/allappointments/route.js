@@ -19,8 +19,8 @@ export async function GET() {
     await dbConnect();
 
     const appointments = await Appointment.find({})
-      // .populate("user") ;   // populate user details
-    //   .populate("doctor"); // populate doctor details
+      .populate("userID") 
+      .populate("doctorId"); // populate doctor details
 
     return Response.json(appointments, { status: 200 });
   } catch (error) {

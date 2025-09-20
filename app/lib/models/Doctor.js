@@ -5,6 +5,7 @@ const DoctorSchema = new mongoose.Schema({
   mobile: { type: String, required: true },
   degree: { type: String, required: true },
   fees: { type: Number, required: true },
+  doc_id: { type: Number, required: true },
   licenseNumber: { type: String, required: true },
   gender: { type: String, required: true, enum: ["Male", "Female", "Other"] },
   specialization: { type: String, required: true },

@@ -144,7 +144,7 @@ useEffect(() => {
               <tbody>
                 {appoint.map((app, i) => (
                   <tr key={i} className="border-b">
-                    <td className="py-2">{app.firstName}</td>
+                    <td className="py-2">{app.userID.name}</td>
                     <td>{app.appointmentDate.split("T")[0]}</td>
                     <td>
                       <span

@@ -350,7 +350,7 @@ export default function HomePage() {
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser);
-        console.log("Logged in user:", parsedUser.name);
+ 
         setUser(parsedUser);
       } catch (err) {
         console.error("Error parsing user from localStorage:", err);

@@ -3,6 +3,60 @@
 import { useEffect, useState } from "react";
 
 export default function DoctorLandingPage() {
+const [user, setuser] = useState(null);
+
+useEffect(() => {
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    try {
+      const parsedUser = JSON.parse(storedUser);
+      // console.log("Logged in userID:", parsedUser);
+      setuser(parsedUser.id);
+   
+    } catch (err) {
+      console.error("Error parsing user from localStorage:", err);
+    }
+  }
+}, []);
+
+
+const [app,setApp]=useState(null);
+  useEffect(() => {
+    const fetchAppointment = async () => {
+      if (!user) return;
+
+      try {
+        const res = await fetch("/api/doctorsappt", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId:user }), // ✅ only send ID
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch appointments");
+
+        const data = await res.json();
+        setApp(data.appointments || []); // ✅ safe fallback
+        console.log("User appointments:", data.appointments);
+      } catch (err) {
+        console.error("Error fetching appointments:", err);
+        // fallback to dummy data
+       
+      }
+    };
+
+    fetchAppointment();
+  }, [user]);
+
+
+
+
+
+
+
+
+
+
+
   const [appointments, setAppointments] = useState([
     {
       id: 1,
@@ -73,7 +127,8 @@ export default function DoctorLandingPage() {
       <div className="max-w-5xl w-full bg-white bg-opacity-90 backdrop-blur-md shadow-lg rounded-xl p-10">
         <header className="mb-10">
           <h1 className="text-4xl font-extrabold text-gray-900 mb-3 drop-shadow-md">
-            Welcome, Dr. Smith
+      {app?.[0]?.doctorName || "Doctor Name"}
+
           </h1>
           <p className="text-gray-700 text-xl tracking-wide">
             Here are your appointments for today:
@@ -111,15 +166,16 @@ export default function DoctorLandingPage() {
               <tr className="border-b border-gray-300">
                 <th className="text-left py-4 px-6 text-gray-800 uppercase tracking-wide">Time</th>
                 <th className="text-left py-4 px-6 text-gray-800 uppercase tracking-wide">Patient Name</th>
-                <th className="text-left py-4 px-6 text-gray-800 uppercase tracking-wide">Reason</th>
+                <th className="text-left py-4 px-6 text-gray-800 uppercase tracking-wide">Date</th>
                 <th className="text-left py-4 px-6 text-gray-800 uppercase tracking-wide">Status</th>
+                  <th className="text-left py-4 px-6 text-gray-800 uppercase tracking-wide">Meeting</th>
               </tr>
             </thead>
             <tbody>
-              {filteredAppointments.map(({ id, time, patientName, reason, status }, index) => (
+              {app?.map((app, index) => (
                 <tr
-                  key={id}
-                  onClick={() => setSelectedPatient({ id, time, patientName, reason, status })}
+                  key={index}
+                  onClick={() => setSelectedPatient({ id:app._id, time:app.appointmentTime, patientName:app.firstName, status:app.status })}
                   className={`cursor-pointer border-b border-gray-200 bg-white 
                     transform transition duration-500 ease-in-out
                     ${
@@ -130,9 +186,9 @@ export default function DoctorLandingPage() {
                     hover:bg-indigo-50`}
                   style={{ transitionDelay: `${index * 150}ms` }}
                 >
-                  <td className="py-4 px-6 font-semibold text-indigo-700">{time}</td>
-                  <td className="py-4 px-6 text-gray-900">{patientName}</td>
-                  <td className="py-4 px-6 text-gray-700 italic">{reason}</td>
+                  <td className="py-4 px-6 font-semibold text-indigo-700">{app.appointmentTime||"N-A"}</td>
+                  <td className="py-4 px-6 text-gray-900">{app.firstName}</td>
+                  <td className="py-4 px-6 text-gray-700 italic">{app.appointmentDate}</td>
                   <td className="py-4 px-6">
                     <span
                       className={`inline-block px-4 py-1 rounded-full text-sm font-semibold shadow-sm
@@ -140,9 +196,11 @@ export default function DoctorLandingPage() {
                       ${statusColor(status)}
                       hover:brightness-110`}
                     >
-                      {status}
+                      {app.status}
                     </span>
                   </td>
+                    <td>
+                      <button>create</button> </td>
                 </tr>
               ))}
             </tbody>
@@ -159,6 +217,7 @@ export default function DoctorLandingPage() {
               <p className="text-black"><strong>Time:</strong> {selectedPatient.time}</p>
               <p className="text-black"><strong>Reason:</strong> {selectedPatient.reason}</p>
               <p className="text-black"><strong>Status:</strong> {selectedPatient.status}</p>
+                <p className="text-black"><strong>Status:</strong> {selectedPatient.status}</p>
               <p className="mt-2 text-black">
                 <strong>Notes:</strong> Lorem ipsum dolor sit amet.
               </p>

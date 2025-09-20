@@ -1,37 +1,3 @@
-// import dbConnect from "@/app/lib/config/db";
-// import Doctor from "@/app/lib/models/Doctor";
-// import { NextResponse } from "next/server";
-
-// export  async function POST(req) {
- 
-//      const {
-// name, mobile,degree,fees,licenseNumber,gender,specialization,imageUrl,} = await req.json();
-//        if (!name||!mobile||!degree||!fees||!licenseNumber||!gender||!specialization||!imageUrl){
-//           return NextResponse.json({message:"something missing"},{status:200})
-//        }
-//        console.log("hello");
-//  await dbConnect();
-//  const existinguser= await Doctor.findOne({name})
-//  if(existinguser){
-//   return NextResponse.json({success:"false"},{error:'already registered'},{status:404});
-//  }
-
- 
-//   const newDoctor = await Doctor.create({
-//     name,
-//     mobile,
-//     degree,
-//     fees,
-//     licenseNumber,
-//     gender,
-//     specialization,
-//     imageUrl,
-//   });
-//     return NextResponse.json({success:'true'},{status:200});
-//     } 
-
-
-
 
 
 import bcrypt from "bcrypt";
@@ -53,8 +19,9 @@ export async function POST(req) {
       gender,
       specialization,
       imageUrl,
+      doc_id
     } = await req.json();
-
+console.log(doc_id);
     if (!name || !email || !password || !mobile || !degree || !fees || !licenseNumber || !gender || !specialization) {
       return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
     }
@@ -74,6 +41,7 @@ export async function POST(req) {
       email,
       passwordHash,
       role: "doctor",
+      doc_id
     });
 
     // Create Doctor profile
@@ -86,10 +54,10 @@ export async function POST(req) {
       gender,
       specialization,
       imageUrl,
-      userId: user._id, // optional link to User
+      doc_id
     });
 
-    return NextResponse.json({ success: true, message: "Doctor created", doctorId: doctor._id });
+    return NextResponse.json({ success: true, message: "Doctor created",doctorId: doctor._id  });
   } catch (err) {
     console.error("Create Doctor Error:", err);
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });

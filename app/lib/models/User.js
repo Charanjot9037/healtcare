@@ -8,9 +8,11 @@ const UserSchema = new mongoose.Schema(
     contact: { type: String },
     location: { type: String },
     age: { type: Number },
+    doc_id: { type: Number},
     gender: { type: String, enum: ["male", "female", "other"] },
     disease: { type: String },
     role: { type: String, enum: ["user", "doctor","admin"], default: "user" },
+
     refreshToken: { type: String },
   },
   { timestamps: true }
