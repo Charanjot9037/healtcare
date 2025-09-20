@@ -32,7 +32,10 @@ export default function LoginPage() {
 
       if (data.user.role === "admin") {
         router.push("/admin");
-      } else {
+      }else if(data.user.role==="doctor"){
+        router.push("/doctor-pannel")
+      } 
+      else {
         router.push("/");
       }
     } catch (err) {

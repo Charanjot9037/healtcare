@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema(
     age: { type: Number },
     gender: { type: String, enum: ["male", "female", "other"] },
     disease: { type: String },
-    role: { type: String, enum: ["user", "admin"], default: "user" },
+    role: { type: String, enum: ["user", "doctor","admin"], default: "user" },
     refreshToken: { type: String },
   },
   { timestamps: true }
