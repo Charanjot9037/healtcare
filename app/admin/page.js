@@ -1,37 +1,31 @@
 "use client";
-import React from 'react'
-import { useState,useEffect } from 'react';
-import Link from 'next/link'
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 
-
-
-
-const dashboard  = () => {
+const Dashboard = () => {
   const [patients, setPatients] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+  const [appoint, setAppoint] = useState([]);
 
-useEffect(() => {
-    const fetchpaitent = async () => {
+  useEffect(() => {
+    const fetchPatients = async () => {
       try {
         const res = await fetch("/api/paitents");
         const data = await res.json();
-     
         setPatients(data);
       } catch (err) {
-        console.error("Error fetching doctors:", err);
+        console.error("Error fetching patients:", err);
       }
     };
-    fetchpaitent();
+    fetchPatients();
   }, []);
 
-  const [doctors, setDoctors] = useState([]);
-
-useEffect(() => {
+  useEffect(() => {
     const fetchDoctors = async () => {
       try {
         const res = await fetch("/api/doctors");
         const data = await res.json();
         setDoctors(data);
-        console.log(data);
       } catch (err) {
         console.error("Error fetching doctors:", err);
       }
@@ -39,127 +33,116 @@ useEffect(() => {
     fetchDoctors();
   }, []);
 
-  const [appoint, setappoint] = useState([]);
-
-useEffect(() => {
-    const fetchappointment = async () => {
+  useEffect(() => {
+    const fetchAppointments = async () => {
       try {
         const res = await fetch("/api/allappointments");
-        const app = await res.json();
-        setappoint(app);
-        console.log(app);
+        const data = await res.json();
+        setAppoint(data);
       } catch (err) {
-        console.error("Error fetching doctors:", err);
+        console.error("Error fetching appointments:", err);
       }
     };
-    fetchappointment();
+    fetchAppointments();
   }, []);
 
-
-
-
-
-
-
-
   return (
-    <div className="min-h-screen bg-gray-100 flex text-black">
-    
-      <aside className="w-64 bg-gradient-to-b from-purple-700 to-purple-500 text-white p-5 space-y-6">
-        <h2 className="text-xl font-bold">HEAL WELL</h2>
-        
-        <div className="space-y-4">
-             <Link href="/admin" className="block hover:bg-purple-600 p-2 rounded-lg">Dashboard</Link>
-             <Link href="/doctor" className="block hover:bg-purple-600 p-2 rounded-lg">Doctor</Link>
-              <Link href="/pharmacy" className="block hover:bg-purple-600 p-2 rounded-lg">Pharmacy</Link>
-               <Link href="/paitents" className="block hover:bg-purple-600 p-2 rounded-lg">Paitent</Link>
-               
-        </div>
+    <div className="min-h-screen flex text-gray-800 bg-gray-100">
+      {/* Sidebar */}
+      <aside className="w-64 bg-gray-800 text-white p-6 space-y-6 shadow-lg">
+        <h2 className="text-2xl font-bold">HEAL WELL</h2>
+        <nav className="space-y-3 mt-6">
+          <Link href="/admin" className="block hover:bg-gray-700 p-3 rounded transition">
+            Dashboard
+          </Link>
+          <Link href="/doctor" className="block hover:bg-gray-700 p-3 rounded transition">
+            Doctor
+          </Link>
+          <Link href="/pharmacy" className="block hover:bg-gray-700 p-3 rounded transition">
+            Pharmacy
+          </Link>
+          <Link href="/paitents" className="block hover:bg-gray-700 p-3 rounded transition">
+            Patient
+          </Link>
+        </nav>
       </aside>
 
-    
-      <main className="flex-1 p-6">
-  
-        <div className="flex justify-between items-center mb-6">
-          <span className="font-semibold">ADMIN</span>
-          
-        </div>
+      {/* Main Content */}
+      <main className="flex-1 p-8">
+        <h1 className="text-2xl font-bold mb-8">Admin Dashboard</h1>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {[
-            { title: "Total Patient", value:patients.length },
-            { title: "Total Doctors", value:doctors.length },
-
+            { title: "Total Patients", value: patients.length },
+            { title: "Total Doctors", value: doctors.length },
           ].map((card, i) => (
-            <div key={i} className="bg-white text-black shadow rounded-xl p-4 text-center">
-              <p className="text-xl font-bold">{card.value}</p>
-              <p className="text-gray-500">{card.title}</p>
+            <div
+              key={i}
+              className="bg-white shadow rounded-xl p-6 flex flex-col items-center justify-center hover:shadow-md transition"
+            >
+              <p className="text-3xl font-bold">{card.value}</p>
+              <p className="mt-2 text-lg text-gray-600">{card.title}</p>
             </div>
           ))}
         </div>
 
-        {/* Graph + Appointments */}
-        <div className="grid md:grid-cols-2 gap-6 mb-6">
-          {/* Patients Graph Placeholder */}
-          <div className="bg-white shadow rounded-xl p-4">
-            <h3 className="font-semibold mb-2">Paitents</h3>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left text-gray-600 border-b">
-                  <th className="py-2">Name</th>
-                  <th>contact</th>
-                  <th>email</th>
+        {/* Patients & Appointments Tables */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          {/* Patients Table */}
+          <div className="bg-white shadow rounded-xl p-6">
+            <h3 className="text-lg font-semibold mb-4">Patients</h3>
+            <table className="w-full text-sm border-collapse">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="py-2 px-4 text-left">Name</th>
+                  <th className="py-2 px-4 text-left">Contact</th>
+                  <th className="py-2 px-4 text-left">Email</th>
                 </tr>
               </thead>
               <tbody>
-                {patients?.map((app, i) => (
-                  <tr key={i} className="border-b">
-                    <td className="py-2">{app?.name}</td>
-                    <td>{app?.contact}</td>
-                    <td>
-                     
-                        {app?.email}
-                    
-                    </td>
+                {patients.map((p, i) => (
+                  <tr key={i} className="border-b hover:bg-gray-50 transition">
+                    <td className="py-2 px-4">{p?.name}</td>
+                    <td className="py-2 px-4">{p?.contact}</td>
+                    <td className="py-2 px-4">{p?.email}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
 
-          {/* Appointments */}
-          <div className="bg-white shadow rounded-xl p-4">
-            <h3 className="font-semibold mb-2">Appointments</h3>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left text-gray-600 border-b">
-                  <th className="py-2">Paitent Name</th>
-                  <th>Date</th>
-               
-                  <th>Status</th>
-              <th className="py-2">Dr.Name</th>
+          {/* Appointments Table */}
+          <div className="bg-white shadow rounded-xl p-6">
+            <h3 className="text-lg font-semibold mb-4">Appointments</h3>
+            <table className="w-full text-sm border-collapse">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="py-2 px-4 text-left">Patient Name</th>
+                  <th className="py-2 px-4 text-left">Date</th>
+                  <th className="py-2 px-4 text-left">Status</th>
+                  <th className="py-2 px-4 text-left">Doctor Name</th>
                 </tr>
               </thead>
               <tbody>
-                {appoint.map((app, i) => (
-                  <tr key={i} className="border-b">
-                    <td className="py-2">{app.userID.name}</td>
-                    <td>{app.appointmentDate.split("T")[0]}</td>
-                    <td>
+                {appoint.map((a, i) => (
+                  <tr key={i} className="border-b hover:bg-gray-50 transition">
+                    <td className="py-2 px-4">{a.userID.name}</td>
+                    <td className="py-2 px-4">{a.appointmentDate.split("T")[0]}</td>
+                    <td className="py-2 px-4">
                       <span
                         className={`px-2 py-1 rounded text-xs ${
-                          app.status === "Approved"
-                            ? "bg-green-100 text-green-600"
-                            : app.status === "Rejected"
-                            ? "bg-red-100 text-red-600"
-                            : "bg-yellow-100 text-yellow-600"
+                          a.status === "Approved"
+                            ? "bg-green-100 text-green-700"
+                            : a.status === "Rejected"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-yellow-100 text-yellow-700"
                         }`}
                       >
-                        {app.status}
+                        {a.status}
                       </span>
                     </td>
-                      <td className="py-2">{app.doctorName}</td>
+                    <td className="py-2 px-4">{a.doctorName}</td>
                   </tr>
                 ))}
               </tbody>
@@ -167,32 +150,32 @@ useEffect(() => {
           </div>
         </div>
 
-        {/* Recent Doctors */}
-        <div className="bg-white shadow rounded-xl p-4 mb-6">
-          <h3 className="font-semibold mb-2">Doctors</h3>
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left border-b text-gray-600">
-                <th>ID</th>
-                <th>Name</th>
-                <th>Mobile</th>
-                <th>Charge</th>
-                <th>Status</th>
+        {/* Doctors Table */}
+        <div className="bg-white shadow rounded-xl p-6 mb-8">
+          <h3 className="text-lg font-semibold mb-4">Doctors</h3>
+          <table className="w-full text-sm border-collapse">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="py-2 px-4">ID</th>
+                <th className="py-2 px-4">Name</th>
+                <th className="py-2 px-4">Mobile</th>
+                <th className="py-2 px-4">Charge</th>
+                <th className="py-2 px-4">Status</th>
               </tr>
             </thead>
             <tbody>
               {doctors.map((doc, i) => (
-                <tr key={i} className="border-b">
-                  <td>{i+1}</td>
-                  <td>{doc.name}</td>
-                  <td>{doc.mobile}</td>
-                  <td>{doc.fees}</td>
-                  <td>
+                <tr key={i} className="border-b hover:bg-gray-50 transition">
+                  <td className="py-2 px-4">{i + 1}</td>
+                  <td className="py-2 px-4">{doc.name}</td>
+                  <td className="py-2 px-4">{doc.mobile}</td>
+                  <td className="py-2 px-4">{doc.fees}</td>
+                  <td className="py-2 px-4">
                     <span
                       className={`px-2 py-1 rounded text-xs ${
                         doc.status === "Online"
-                          ? "bg-green-100 text-green-600"
-                          : "bg-red-100 text-red-600"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700"
                       }`}
                     >
                       {doc.status}
@@ -204,16 +187,16 @@ useEffect(() => {
           </table>
         </div>
 
-        {/* Out of Stock */}
-        <div className="bg-white shadow rounded-xl p-4">
-          <h3 className="font-semibold mb-2">Out of Stock</h3>
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left border-b text-gray-600">
-                <th>ID</th>
-                <th>Drug</th>
-                <th>Expiry</th>
-                <th>Qty</th>
+        {/* Out of Stock Table */}
+        <div className="bg-white shadow rounded-xl p-6">
+          <h3 className="text-lg font-semibold mb-4">Out of Stock</h3>
+          <table className="w-full text-sm border-collapse">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="py-2 px-4">ID</th>
+                <th className="py-2 px-4">Drug</th>
+                <th className="py-2 px-4">Expiry</th>
+                <th className="py-2 px-4">Qty</th>
               </tr>
             </thead>
             <tbody>
@@ -221,11 +204,11 @@ useEffect(() => {
                 { id: 1, drug: "Paracetamol", expiry: "2025-10-12", qty: 0 },
                 { id: 2, drug: "Azinole", expiry: "2025-12-21", qty: 0 },
               ].map((item, i) => (
-                <tr key={i} className="border-b">
-                  <td>{item.id}</td>
-                  <td>{item.drug}</td>
-                  <td>{item.expiry}</td>
-                  <td>{item.qty}</td>
+                <tr key={i} className="border-b hover:bg-gray-50 transition">
+                  <td className="py-2 px-4">{item.id}</td>
+                  <td className="py-2 px-4">{item.drug}</td>
+                  <td className="py-2 px-4">{item.expiry}</td>
+                  <td className="py-2 px-4">{item.qty}</td>
                 </tr>
               ))}
             </tbody>
@@ -233,7 +216,7 @@ useEffect(() => {
         </div>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default dashboard 
+export default Dashboard;
