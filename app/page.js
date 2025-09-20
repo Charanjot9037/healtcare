@@ -561,8 +561,8 @@ export default function HomePage() {
               <tr key={pat.appointmentId || index} className="text-black">
                 <td className="py-2">{pat.appointmentId}</td>
                 <td>{pat.doctorName}</td>
-                <td>{pat.date}</td>
-                <td>{pat.startTime}</td>
+                <td>{pat?.appointmentDate.split("T")[0]}</td>
+                <td>{pat.appointmentTime||"N-A"}</td>
                 <td>
                   <span
                     className={`px-2 py-1 rounded text-xs ${

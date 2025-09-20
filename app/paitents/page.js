@@ -23,10 +23,7 @@ useEffect(() => {
 
 
 
-  // Delete handler
-//   const deletePatient = (id: number) => {
-//     setPatients(patients.filter((pat) => pat.id !== id));
-//   };
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 text-black">
