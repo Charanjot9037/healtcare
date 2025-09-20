@@ -198,29 +198,29 @@ export default function DoctorLandingPage() {
           </table>
         )}
 
-        {/* Modal */}
+        {/* Glassmorphic Modal */}
         {selectedPatient && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="bg-white/80 backdrop-blur-2xl p-8 rounded-2xl shadow-xl max-w-md w-full border border-white/30 text-black">
-              <h2 className="text-xl font-bold mb-4">
+          <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+            <div className="bg-white/20 backdrop-blur-3xl border border-white/30 p-8 rounded-3xl shadow-xl max-w-md w-full text-black">
+              <h2 className="text-2xl font-bold mb-4 text-white drop-shadow-md">
                 {selectedPatient.patientName}
               </h2>
-              <p>
+              <p className="text-white/90">
                 <strong>Time:</strong> {selectedPatient.time}
               </p>
-              <p>
+              <p className="text-white/90">
                 <strong>Status:</strong> {selectedPatient.status}
               </p>
-              <p className="mt-2">
+              <p className="mt-2 text-white/80">
                 <strong>Notes:</strong> Lorem ipsum dolor sit amet.
               </p>
-              <p className="mt-1">
+              <p className="mt-1 text-white/80">
                 <strong>Prescription:</strong> Vitamin D, Paracetamol
               </p>
 
               {/* Status Update */}
               <div className="mt-4">
-                <label className="block text-sm font-semibold mb-2">
+                <label className="block text-sm font-semibold mb-2 text-white/90">
                   Update Status:
                 </label>
                 <select
@@ -232,7 +232,7 @@ export default function DoctorLandingPage() {
                       status: e.target.value,
                     }));
                   }}
-                  className="px-4 py-2 border border-gray-300 bg-white/60 text-black rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="px-4 py-2 border border-white/50 bg-white/30 text-black rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 backdrop-blur-md"
                 >
                   <option value="Confirmed">Confirmed</option>
                   <option value="Pending">Pending</option>
@@ -242,7 +242,7 @@ export default function DoctorLandingPage() {
 
               <button
                 onClick={() => setSelectedPatient(null)}
-                className="mt-6 px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition"
+                className="mt-6 px-6 py-2 bg-indigo-600 text-white font-semibold rounded-xl shadow-md hover:bg-indigo-700 transition"
               >
                 Close
               </button>
