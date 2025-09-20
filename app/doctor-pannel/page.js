@@ -107,16 +107,14 @@ export default function DoctorLandingPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-200 via-purple-300 to-purple-400 flex items-center justify-center p-6">
-      {/* Transparent Center Card */}
-      <div className="max-w-5xl w-full bg-white/30 backdrop-blur-2xl border border-white/40 shadow-2xl rounded-2xl p-10">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-300 via-purple-200 to-blue-300 flex items-center justify-center p-6">
+      {/* Transparent Glassmorphic Center Card */}
+      <div className="max-w-5xl w-full bg-white/25 backdrop-blur-xl shadow-2xl rounded-2xl p-10 border border-white/30 text-black">
         <header className="mb-10 text-center">
-          <h1 className="text-4xl font-extrabold text-gray-900 mb-2 drop-shadow-sm">
+          <h1 className="text-4xl font-extrabold mb-2 drop-shadow-sm">
             {app?.[0]?.doctorName || "Doctor Name"}
           </h1>
-          <p className="text-gray-700 text-lg">
-            Here are your appointments for today:
-          </p>
+          <p className="text-lg">Here are your appointments for today:</p>
         </header>
 
         {/* Search + Filter */}
@@ -126,12 +124,12 @@ export default function DoctorLandingPage() {
             placeholder="🔍 Search by name, reason, or status..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="px-4 py-2 border border-gray-400 bg-white/60 backdrop-blur-md text-gray-900 placeholder-gray-600 rounded-xl shadow-sm w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="px-4 py-2 border border-gray-300 bg-white/60 backdrop-blur-md text-black placeholder-gray-600 rounded-xl shadow-sm w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           />
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-400 bg-white/60 backdrop-blur-md text-gray-900 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="px-4 py-2 border border-gray-300 bg-white/60 backdrop-blur-md text-black rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
           >
             <option value="All">All</option>
             <option value="Confirmed">Confirmed</option>
@@ -141,13 +139,11 @@ export default function DoctorLandingPage() {
         </div>
 
         {filteredAppointments.length === 0 ? (
-          <p className="text-center text-gray-600 text-lg">
-            No appointments found.
-          </p>
+          <p className="text-center text-lg">No appointments found.</p>
         ) : (
           <table className="w-full border-separate border-spacing-y-3">
             <thead>
-              <tr className="text-gray-700 text-sm uppercase tracking-wide">
+              <tr className="text-sm uppercase tracking-wide">
                 <th className="text-left py-3 px-6">Time</th>
                 <th className="text-left py-3 px-6">Patient Name</th>
                 <th className="text-left py-3 px-6">Date</th>
@@ -167,23 +163,21 @@ export default function DoctorLandingPage() {
                       status: app.status,
                     })
                   }
-                  className={`cursor-pointer rounded-xl bg-white/70 backdrop-blur-md shadow-md
+                  className={`cursor-pointer rounded-xl bg-white/40 backdrop-blur-md shadow-md
                     transition transform duration-500
                     ${
                       animate
                         ? "opacity-100 translate-y-0"
                         : "opacity-0 translate-y-4"
                     }
-                    hover:scale-[1.01] hover:bg-purple-50`}
+                    hover:scale-[1.01] hover:bg-white/60`}
                   style={{ transitionDelay: `${index * 120}ms` }}
                 >
-                  <td className="py-4 px-6 font-semibold text-purple-700">
+                  <td className="py-4 px-6 font-semibold">
                     {app.appointmentTime || "N/A"}
                   </td>
-                  <td className="py-4 px-6 text-gray-900">{app.firstName}</td>
-                  <td className="py-4 px-6 text-gray-600 italic">
-                    {app.appointmentDate}
-                  </td>
+                  <td className="py-4 px-6">{app.firstName}</td>
+                  <td className="py-4 px-6 italic">{app.appointmentDate}</td>
                   <td className="py-4 px-6">
                     <span
                       className={`inline-block px-4 py-1 rounded-full text-sm font-semibold shadow-sm ${statusColor(
@@ -194,7 +188,7 @@ export default function DoctorLandingPage() {
                     </span>
                   </td>
                   <td className="py-4 px-6">
-                    <button className="px-3 py-1 bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition">
+                    <button className="px-3 py-1 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition">
                       Create
                     </button>
                   </td>
@@ -207,26 +201,26 @@ export default function DoctorLandingPage() {
         {/* Modal */}
         {selectedPatient && (
           <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="bg-white/90 backdrop-blur-xl p-8 rounded-2xl shadow-xl max-w-md w-full">
-              <h2 className="text-xl font-bold mb-4 text-purple-700">
+            <div className="bg-white/80 backdrop-blur-2xl p-8 rounded-2xl shadow-xl max-w-md w-full border border-white/30 text-black">
+              <h2 className="text-xl font-bold mb-4">
                 {selectedPatient.patientName}
               </h2>
-              <p className="text-gray-900">
+              <p>
                 <strong>Time:</strong> {selectedPatient.time}
               </p>
-              <p className="text-gray-900">
+              <p>
                 <strong>Status:</strong> {selectedPatient.status}
               </p>
-              <p className="mt-2 text-gray-800">
+              <p className="mt-2">
                 <strong>Notes:</strong> Lorem ipsum dolor sit amet.
               </p>
-              <p className="mt-1 text-gray-800">
+              <p className="mt-1">
                 <strong>Prescription:</strong> Vitamin D, Paracetamol
               </p>
 
               {/* Status Update */}
               <div className="mt-4">
-                <label className="block text-sm font-semibold mb-2 text-gray-700">
+                <label className="block text-sm font-semibold mb-2">
                   Update Status:
                 </label>
                 <select
@@ -238,7 +232,7 @@ export default function DoctorLandingPage() {
                       status: e.target.value,
                     }));
                   }}
-                  className="px-4 py-2 border border-gray-400 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="px-4 py-2 border border-gray-300 bg-white/60 text-black rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-400"
                 >
                   <option value="Confirmed">Confirmed</option>
                   <option value="Pending">Pending</option>
@@ -248,7 +242,7 @@ export default function DoctorLandingPage() {
 
               <button
                 onClick={() => setSelectedPatient(null)}
-                className="mt-6 px-6 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition"
+                className="mt-6 px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition"
               >
                 Close
               </button>
