@@ -1,4 +1,3 @@
-
 "use client";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
@@ -46,8 +45,8 @@ export default function AppointmentManagement() {
     try {
       const payload = {
         ...formData,
-        doctorId,       // attach doctor id here
-        userID: user.id, // attach user id here
+        doctorId,
+        userID: user.id,
         doctorName,
         specialization,
       };
@@ -72,175 +71,104 @@ export default function AppointmentManagement() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex justify-center items-start">
-      <div className="bg-white shadow-lg rounded-2xl p-8 max-w-3xl w-full">
+    <div className="min-h-screen bg-gradient-to-br from-purple-200 via-pink-100 to-indigo-200 flex justify-center items-start py-12 px-4">
+      <div className="w-full max-w-3xl bg-white/40 backdrop-blur-lg border border-white/30 rounded-3xl shadow-2xl p-8 md:p-12 transition-all">
         {/* Page Heading */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-purple-700">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-purple-700 drop-shadow-md">
             Book Your Appointment
           </h1>
-          <p className="text-gray-600 mt-2">
-            Fill in your details below to confirm an appointment with your doctor.
+          <p className="text-gray-700 mt-2 md:text-lg">
+            Fill in your details to confirm an appointment with your doctor.
           </p>
         </div>
 
         {/* Doctor Info Card */}
-        <div className="flex items-center gap-4 border rounded-xl p-4 mb-8 bg-purple-50">
+        <div className="flex items-center gap-4 border rounded-2xl p-4 mb-8 bg-purple-50/60 backdrop-blur-md shadow-md hover:shadow-xl transition">
           {imageUrl && (
             <Image
               src={imageUrl}
               alt={doctorName}
               width={100}
               height={100}
-              className="rounded-lg object-cover shadow-md"
+              className="rounded-xl object-cover shadow-lg"
             />
           )}
           <div>
             <h2 className="text-xl font-semibold text-gray-800">{doctorName}</h2>
-            <p className="text-purple-600">{specialization}</p>
+            <p className="text-purple-600 font-medium">{specialization}</p>
           </div>
         </div>
 
         {/* Appointment Form */}
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black"
-        >
-          {/* First Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              First Name
-            </label>
-            <input
-              type="text"
-              name="firstName"
-              placeholder="Enter your first name"
-              value={formData.firstName}
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
+          {[
+            { label: "First Name", name: "firstName", type: "text", required: true },
+            { label: "Last Name", name: "lastName", type: "text", required: true },
+            { label: "Email Address", name: "email", type: "email", required: true },
+            { label: "Mobile Number", name: "mobile", type: "text", required: true },
+            { label: "Date of Birth", name: "dob", type: "date" },
+            {
+              label: "Gender",
+              name: "gender",
+              type: "select",
+              options: ["Male", "Female", "Other"],
+            },
+            { label: "Appointment Date", name: "appointmentDate", type: "date", required: true },
+          ].map((field, idx) => (
+            <div key={idx}>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{field.label}</label>
+              {field.type === "select" ? (
+                <select
+                  name={field.name}
+                  value={formData[field.name]}
+                  onChange={handleChange}
+                  className="w-full border rounded-xl px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200 backdrop-blur-sm"
+                >
+                  <option value="">Select {field.label.toLowerCase()}</option>
+                  {field.options.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type={field.type}
+                  name={field.name}
+                  value={formData[field.name]}
+                  onChange={handleChange}
+                  placeholder={`Enter your ${field.label.toLowerCase()}`}
+                  required={field.required}
+                  className="w-full border rounded-xl px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200 backdrop-blur-sm"
+                />
+              )}
+            </div>
+          ))}
+
+          {/* Address */}
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+            <textarea
+              name="address"
+              placeholder="Enter your complete address"
+              value={formData.address}
               onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200"
-              required
+              className="w-full border rounded-xl px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200 backdrop-blur-sm"
+              rows={3}
             />
           </div>
 
-          {/* Last Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Last Name
-            </label>
-            <input
-              type="text"
-              name="lastName"
-              placeholder="Enter your last name"
-              value={formData.lastName}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200"
-              required
-            />
-          </div>
-
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email Address
-            </label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200"
-              required
-            />
-          </div>
-
-          {/* Mobile */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Mobile Number
-            </label>
-            <input
-              type="text"
-              name="mobile"
-              placeholder="Enter your mobile number"
-              value={formData.mobile}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200"
-              required
-            />
-          </div>
-
-          {/* DOB */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Date of Birth
-            </label>
-            <input
-              type="date"
-              name="dob"
-              value={formData.dob}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200"
-            />
-          </div>
-
-          {/* Gender */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Gender
-            </label>
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200"
+          {/* Submit Button */}
+          <div className="md:col-span-2">
+            <button
+              type="submit"
+              className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl shadow-lg transition-all duration-300"
             >
-              <option value="">Select gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          {/* Appointment Date */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Appointment Date
-            </label>
-            <input
-              type="date"
-              name="appointmentDate"
-              value={formData.appointmentDate}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200"
-              required
-            />
+              Confirm Appointment
+            </button>
           </div>
         </form>
-
-        {/* Address */}
-        <div className="mt-6">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Address
-          </label>
-          <textarea
-            name="address"
-            placeholder="Enter your complete address"
-            value={formData.address}
-            onChange={handleChange}
-            className="w-full border rounded-lg px-3 py-2 focus:outline-purple-500 focus:ring focus:ring-purple-200 text-black"
-            rows={3}
-          />
-        </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          onClick={handleSubmit}
-          className="mt-8 w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold shadow-md transition"
-        >
-          Confirm Appointment
-        </button>
       </div>
     </div>
   );
