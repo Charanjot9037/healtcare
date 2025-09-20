@@ -30,12 +30,7 @@ useEffect(() => {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Patients Management</h1>
-        <button
-          className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow transition"
-          onClick={() => alert("Add Patient Modal/Functionality here")}
-        >
-          + Add Patient
-        </button>
+      
       </div>
 
       {/* Patients Table */}
@@ -43,7 +38,7 @@ useEffect(() => {
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left border-b text-gray-600">
-              <th className="py-2">ID</th>
+              <th className="py-2">Sr.no</th>
               <th>Name</th>
               <th>Mobile</th>
               <th>Age</th>
@@ -53,9 +48,9 @@ useEffect(() => {
             </tr>
           </thead>
           <tbody>
-            {patients.map((pat) => (
-              <tr key={pat.id} className="border-b">
-                <td className="py-4">{pat.id}</td>
+            {patients.map((pat,index) => (
+              <tr key={index} className="border-b">
+                <td className="py-4">{index+1}</td>
                 <td>{pat.name}</td>
                 <td>{pat.contact}</td>
                 <td>{pat.age}</td>

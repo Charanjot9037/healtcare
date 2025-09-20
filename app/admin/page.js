@@ -39,6 +39,21 @@ useEffect(() => {
     fetchDoctors();
   }, []);
 
+  const [appoint, setappoint] = useState([]);
+
+useEffect(() => {
+    const fetchappointment = async () => {
+      try {
+        const res = await fetch("/api/allappointments");
+        const app = await res.json();
+        setappoint(app);
+        console.log(app);
+      } catch (err) {
+        console.error("Error fetching doctors:", err);
+      }
+    };
+    fetchappointment();
+  }, []);
 
 
 
@@ -98,7 +113,7 @@ useEffect(() => {
                 </tr>
               </thead>
               <tbody>
-                {patients.map((app, i) => (
+                {patients?.map((app, i) => (
                   <tr key={i} className="border-b">
                     <td className="py-2">{app?.name}</td>
                     <td>{app?.contact}</td>
@@ -119,21 +134,18 @@ useEffect(() => {
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-left text-gray-600 border-b">
-                  <th className="py-2">Name</th>
+                  <th className="py-2">Paitent Name</th>
                   <th>Date</th>
+               
                   <th>Status</th>
+              <th className="py-2">Dr.Name</th>
                 </tr>
               </thead>
               <tbody>
-                {[
-                  { name: "Chance Vences", date: "14.10.2023", status: "Rejected" },
-                  { name: "Dexien Kenter", date: "18.10.2023", status: "Pending" },
-                  { name: "Patijo Lukir", date: "19.10.2023", status: "Pending" },
-                  { name: "Emerson Suerten", date: "20.10.2023", status: "Approved" },
-                ].map((app, i) => (
+                {appoint.map((app, i) => (
                   <tr key={i} className="border-b">
-                    <td className="py-2">{app.name}</td>
-                    <td>{app.date}</td>
+                    <td className="py-2">{app.firstName}</td>
+                    <td>{app.appointmentDate.split("T")[0]}</td>
                     <td>
                       <span
                         className={`px-2 py-1 rounded text-xs ${
@@ -147,6 +159,7 @@ useEffect(() => {
                         {app.status}
                       </span>
                     </td>
+                      <td className="py-2">{app.doctorName}</td>
                   </tr>
                 ))}
               </tbody>
@@ -170,7 +183,7 @@ useEffect(() => {
             <tbody>
               {doctors.map((doc, i) => (
                 <tr key={i} className="border-b">
-                  <td>{doc._id}</td>
+                  <td>{i+1}</td>
                   <td>{doc.name}</td>
                   <td>{doc.mobile}</td>
                   <td>{doc.fees}</td>
