@@ -49,19 +49,19 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen flex text-gray-800 bg-gray-100">
       {/* Sidebar */}
-      <aside className="w-64 bg-gray-800 text-white p-6 space-y-6 shadow-lg">
+      <aside className="w-64 bg-purple-800 text-white p-6 space-y-6 shadow-lg">
         <h2 className="text-2xl font-bold">HEAL WELL</h2>
         <nav className="space-y-3 mt-6">
-          <Link href="/admin" className="block hover:bg-gray-700 p-3 rounded transition">
+          <Link href="/admin" className="block hover:bg-purple-700 p-3 rounded transition">
             Dashboard
           </Link>
-          <Link href="/doctor" className="block hover:bg-gray-700 p-3 rounded transition">
+          <Link href="/doctor" className="block hover:bg-purple-700 p-3 rounded transition">
             Doctor
           </Link>
-          <Link href="/pharmacy" className="block hover:bg-gray-700 p-3 rounded transition">
+          <Link href="/pharmacy" className="block hover:bg-purple-700 p-3 rounded transition">
             Pharmacy
           </Link>
-          <Link href="/paitents" className="block hover:bg-gray-700 p-3 rounded transition">
+          <Link href="/paitents" className="block hover:bg-purple-700 p-3 rounded transition">
             Patient
           </Link>
         </nav>
@@ -81,7 +81,7 @@ const Dashboard = () => {
               key={i}
               className="bg-white shadow rounded-xl p-6 flex flex-col items-center justify-center hover:shadow-md transition"
             >
-              <p className="text-3xl font-bold">{card.value}</p>
+              <p className="text-3xl font-bold text-purple-800">{card.value}</p>
               <p className="mt-2 text-lg text-gray-600">{card.title}</p>
             </div>
           ))}
@@ -91,7 +91,7 @@ const Dashboard = () => {
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           {/* Patients Table */}
           <div className="bg-white shadow rounded-xl p-6">
-            <h3 className="text-lg font-semibold mb-4">Patients</h3>
+            <h3 className="text-lg font-semibold mb-4 text-purple-800">Patients</h3>
             <table className="w-full text-sm border-collapse">
               <thead className="bg-gray-100">
                 <tr>
@@ -114,7 +114,7 @@ const Dashboard = () => {
 
           {/* Appointments Table */}
           <div className="bg-white shadow rounded-xl p-6">
-            <h3 className="text-lg font-semibold mb-4">Appointments</h3>
+            <h3 className="text-lg font-semibold mb-4 text-purple-800">Appointments</h3>
             <table className="w-full text-sm border-collapse">
               <thead className="bg-gray-100">
                 <tr>
@@ -133,7 +133,7 @@ const Dashboard = () => {
                       <span
                         className={`px-2 py-1 rounded text-xs ${
                           a.status === "Approved"
-                            ? "bg-green-100 text-green-700"
+                            ? "bg-purple-100 text-purple-700"
                             : a.status === "Rejected"
                             ? "bg-red-100 text-red-700"
                             : "bg-yellow-100 text-yellow-700"
@@ -152,7 +152,7 @@ const Dashboard = () => {
 
         {/* Doctors Table */}
         <div className="bg-white shadow rounded-xl p-6 mb-8">
-          <h3 className="text-lg font-semibold mb-4">Doctors</h3>
+          <h3 className="text-lg font-semibold mb-4 text-purple-800">Doctors</h3>
           <table className="w-full text-sm border-collapse">
             <thead className="bg-gray-100">
               <tr>
@@ -174,7 +174,7 @@ const Dashboard = () => {
                     <span
                       className={`px-2 py-1 rounded text-xs ${
                         doc.status === "Online"
-                          ? "bg-green-100 text-green-700"
+                          ? "bg-purple-100 text-purple-700"
                           : "bg-red-100 text-red-700"
                       }`}
                     >
@@ -189,7 +189,7 @@ const Dashboard = () => {
 
         {/* Out of Stock Table */}
         <div className="bg-white shadow rounded-xl p-6">
-          <h3 className="text-lg font-semibold mb-4">Out of Stock</h3>
+          <h3 className="text-lg font-semibold mb-4 text-purple-800">Out of Stock</h3>
           <table className="w-full text-sm border-collapse">
             <thead className="bg-gray-100">
               <tr>
