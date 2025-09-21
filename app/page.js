@@ -306,6 +306,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Navbar from "./components/navbar";
 
 export default function HomePage() {
   // ----- Slider -----
@@ -439,29 +440,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header / Navbar */}
-      <header className="bg-purple-700 text-white p-4 shadow-md">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-xl font-bold">Heal Well</h1>
-          <nav className="space-x-6">
-            <Link href="/homepage" className="hover:text-yellow-300">
-              Home
-            </Link>
-            <Link href="/admin" className="hover:text-yellow-300">
-              Admin
-            </Link>
-            <Link href="/userappnt/jot" className="hover:text-yellow-300">
-              Appointments
-            </Link>
-            <Link href="#" className="hover:text-yellow-300">
-              Reports
-            </Link>
-            <Link href="/login" className="hover:text-yellow-300">
-              Login
-            </Link>
-          </nav>
-        </div>
-      </header>
-
+  <Navbar/>
       {/* Hero Section with Slider */}
       <section className="relative w-full h-[600px] overflow-hidden shadow bg-white">
         {slides.map((slide, idx) => (
