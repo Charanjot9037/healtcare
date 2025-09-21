@@ -1,5 +1,4 @@
 
-
 import dbConnect from "@/app/lib/config/db";
 import Appointment from "@/app/lib/models/appointment";
 
@@ -27,4 +26,5 @@ export async function POST(req) {
     return Response.json({ success: false, error: error.message }, { status: 500 });
   }
 }
+
 

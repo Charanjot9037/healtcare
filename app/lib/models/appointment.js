@@ -17,6 +17,8 @@ const appointmentSchema = new mongoose.Schema(
     appointmentDate: { type: Date, required: true },
     appointmentTime: { type: String,default: null },
     address: { type: String },
+     stripeSessionId: { type: String }, // 
+    metadata: { type: Object }, 
 
     status: { type: String, default: "Pending" }, // Pending / Confirmed / Cancelled
   },

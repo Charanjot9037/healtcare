@@ -3,6 +3,11 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+);
 
 export default function AppointmentManagement() {
   const [user, setUser] = useState(null);
@@ -35,41 +40,46 @@ export default function AppointmentManagement() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!user?.id) {
-      alert("⚠️ User not found. Please log in again.");
+  if (!user?.id) {
+    alert("⚠️ User not found. Please log in again.");
+    return;
+  }
+
+  try {
+    const payload = {
+      ...formData,
+      doctorId,
+      userID: user.id,
+      doctorName,
+      specialization,
+    };
+
+    // 1️⃣ Create Checkout Session from backend
+    const res = await fetch("/api/stripe/create-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const { id } = await res.json();
+
+    if (!id) {
+      alert("❌ Could not start payment");
       return;
     }
 
-    try {
-      const payload = {
-        ...formData,
-        doctorId,       // attach doctor id here
-        userID: user.id, // attach user id here
-        doctorName,
-        specialization,
-      };
-
-      const res = await fetch("/api/appointments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        const result = await res.json();
-        alert("✅ Appointment booked successfully!");
-        console.log(result);
-      } else {
-        alert("❌ Failed to book appointment");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("❌ Something went wrong");
-    }
-  };
+    // 2️⃣ Redirect to Stripe Checkout
+    const stripe = await stripePromise;
+    await stripe.redirectToCheckout({ sessionId: id });
+  } catch (error) {
+    console.error(error);
+    alert("❌ Something went wrong");
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex justify-center items-start">
