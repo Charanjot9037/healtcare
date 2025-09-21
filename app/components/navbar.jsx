@@ -23,36 +23,51 @@ const Navbar = () => {
   };
 
   return (
-    <header className="bg-purple-700 text-white p-4 shadow-md">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-xl font-bold">Heal Well</h1>
-        <nav className="space-x-6 flex items-center">
-          <Link href="/homepage" className="hover:text-yellow-300">
+    <header className="bg-gradient-to-r from-purple-700 to-purple-900 text-white shadow-lg">
+      <div className="container mx-auto flex justify-between items-center px-6 py-4">
+        {/* Logo / Brand */}
+        <h1 className="text-2xl font-extrabold tracking-wide cursor-pointer">
+          Heal <span className="text-yellow-300">Well</span>
+        </h1>
+
+        {/* Navigation Links */}
+        <nav className="flex items-center space-x-8 text-lg font-medium">
+          <Link
+            href="/homepage"
+            className="hover:text-yellow-300 transition-colors duration-200"
+          >
             Home
           </Link>
-       
-          <Link href="/userappnt/jot" className="hover:text-yellow-300">
+          <Link
+            href="/userappnt/jot"
+            className="hover:text-yellow-300 transition-colors duration-200"
+          >
             Appointments
           </Link>
-          <Link href="#" className="hover:text-yellow-300">
+          <Link
+            href="#"
+            className="hover:text-yellow-300 transition-colors duration-200"
+          >
             Reports
           </Link>
 
           {user ? (
-            <>
+            <div className="flex items-center space-x-4">
               <span className="font-semibold text-yellow-200">
-                hello, 
-                       {user.name}
+                Hello, {user.name}
               </span>
               <button
                 onClick={handleLogout}
-                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg shadow-md transition duration-200"
               >
                 Logout
               </button>
-            </>
+            </div>
           ) : (
-            <Link href="/login" className="hover:text-yellow-300">
+            <Link
+              href="/login"
+              className="bg-yellow-400 text-purple-900 font-semibold px-4 py-2 rounded-lg hover:bg-yellow-300 transition duration-200 shadow-md"
+            >
               Login
             </Link>
           )}
