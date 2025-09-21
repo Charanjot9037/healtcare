@@ -552,16 +552,16 @@ export default function HomePage() {
                         : "bg-yellow-100 text-yellow-600"
                     }`}
                   >
-                    {pat.appointmentStatus}
+                    {pat?.appointmentStatus}
                   </span>
                 </td>
                 <td>
                   <button
-                    disabled={pat.status !== "Confirmed"}
-                    onClick={() => router.push("/meeting")}
+                    // disabled={pat.appointmentStatus !== "confirm"}
+                    onClick={() => router.push(`${pat.meetinglink}`)}
                     className={`bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded-lg text-xs shadow transition
                       ${
-                        pat.status !== "Confirmed"
+                        pat.appointmentStatus !== "confirm"
                           ? "opacity-50 cursor-not-allowed"
                           : ""
                       }`}

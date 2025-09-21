@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import { useRouter } from "next/navigation";
 export default function DoctorLandingPage() {
   const [user, setuser] = useState(null);
-
+const router=useRouter();
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -33,6 +33,7 @@ export default function DoctorLandingPage() {
 
         const data = await res.json();
         setApp(data.appointments || []);
+        console.log(data);
       } catch (err) {
         console.error("Error fetching appointments:", err);
       }
@@ -87,6 +88,17 @@ export default function DoctorLandingPage() {
         return "bg-gray-200 text-gray-800";
     }
   };
+
+  const generateMeetingLink = (meetingId) => {
+  return (
+    window.location.protocol +
+    "//" +
+    window.location.host +
+    "/room/" +
+    meetingId
+  );
+};
+
 
   const updateStatus = (id, newStatus) => {
     setAppointments((prev) =>
@@ -159,11 +171,17 @@ export default function DoctorLandingPage() {
                     key={index}
                     className={`cursor-pointer rounded-xl bg-white/40 backdrop-blur-md shadow-md
                     transition transform duration-500
-                    ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}
+                    ${
+                      animate
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 translate-y-4"
+                    }
                     hover:scale-[1.01] hover:bg-white/60`}
                     style={{ transitionDelay: `${index * 120}ms` }}
                   >
-                    <td className="py-4 px-6 font-semibold">{app.appointmentTime || "N/A"}</td>
+                    <td className="py-4 px-6 font-semibold">
+                      {app.appointmentTime || "N/A"}
+                    </td>
                     <td className="py-4 px-6">{app.firstName}</td>
                     <td className="py-4 px-6 italic">{app.appointmentDate}</td>
                     <td className="py-4 px-6">
@@ -172,11 +190,11 @@ export default function DoctorLandingPage() {
                           app.status
                         )}`}
                       >
-                        {app.status}
+                        {app?.appointmentStatus}
                       </span>
                     </td>
                     <td className="py-4 px-6">
-                      <button
+                      {/* <button
                         className="px-3 py-1 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition"
                         onClick={() => {
                           setSelectedPatient({
@@ -189,7 +207,35 @@ export default function DoctorLandingPage() {
                         }}
                       >
                         Create
-                      </button>
+                      </button> */}
+                      {app?.appointmentStatus === "confirm" ? (
+  <button
+    className="px-3 py-1 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition"
+    onClick={() => {
+      // redirect to meeting page with router
+      router.push(`${app.meetinglink}`); 
+      // or use meetingLink if you stored it in DB: router.push(app.meetingLink)
+    }}
+  >
+    Join
+  </button>
+) : (
+  <button
+    className="px-3 py-1 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition"
+    onClick={() => {
+      setSelectedPatient({
+        id: app._id,
+        time: app.appointmentTime,
+        patientName: app.firstName,
+        status: app.status,
+      });
+      setShowModal(true);
+    }}
+  >
+    Create
+  </button>
+)}
+
                     </td>
                   </tr>
                 ))}
@@ -210,7 +256,7 @@ export default function DoctorLandingPage() {
               <strong>Time:</strong> {selectedPatient.time}
             </p>
             <p className="text-white/90">
-              <strong>Status:</strong> {selectedPatient.status}
+              <strong>Payment Status:</strong> {selectedPatient.status}
             </p>
             <p className="mt-2 text-white/80">
               <strong>Notes:</strong> Lorem ipsum dolor sit amet.
@@ -219,29 +265,82 @@ export default function DoctorLandingPage() {
               <strong>Prescription:</strong> Vitamin D, Paracetamol
             </p>
 
-            {/* Status Update */}
-            <div className="mt-4">
-              <label className="block text-sm font-semibold mb-2 text-white/90">
-                Update Status:
-              </label>
-              <select
-                value={selectedPatient.status}
-                onChange={(e) => {
-                  updateStatus(selectedPatient.id, e.target.value);
-                  setSelectedPatient((prev) => ({
-                    ...prev,
-                    status: e.target.value,
-                  }));
-                }}
-                className="px-4 py-2 border border-white/50 bg-white/30 text-black rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 backdrop-blur-md"
-              >
-                <option value="Confirmed">Confirmed</option>
-                <option value="Pending">Pending</option>
-                <option value="Cancelled">Cancelled</option>
-              </select>
+           
+            <div className="mt-4 space-y-4">
+         
+              <div>
+                
+                  Update Status: Confirmed
+                 
+              </div>
+
+              {/* Meeting Time */}
+              <div>
+                <label className="block text-sm font-semibold mb-2 text-white/90">
+                  Meeting Time:
+                </label>
+             <input
+  type="time"
+  value={selectedPatient.time || ""}
+  onChange={(e) =>
+    setSelectedPatient((prev) => ({
+      ...prev,
+      time: e.target.value,
+    }))
+  }
+  required
+  className="px-4 py-2 border border-white/50 bg-white/30 text-black rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 backdrop-blur-md"
+/>
+              </div>
+
+              {/* Meeting Link */}
+              <div>
+                <label className="block text-sm font-semibold mb-2 text-white/90">
+                  Meeting Link:
+                </label>
+              </div>
+
+        <button
+  className="bg-blue-500 px-2 py-1 text-white rounded-lg"
+    disabled={!selectedPatient.time}
+  onClick={async () => {
+    const meetingId = app?.[0]?.doctorName; // or generate uuid if you want unique ID
+    const meetingLink = generateMeetingLink(meetingId);
+console.log(meetingLink);
+
+    try {
+      const res = await fetch("/api/updateappointment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          appointmentId: selectedPatient.id,
+          status:"confirm",
+          time: selectedPatient.time,
+          meetingLink,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Failed to save meeting link");
+
+      const data = await res.json();
+      console.log("Meeting link saved:", data);
+      alert("Meeting link created: " + meetingLink);
+    } catch (err) {
+      console.error(err);
+      alert("Error creating meeting link");
+    }
+  }}
+>
+  create meeting
+</button>
+
+        
+
+        
             </div>
 
             <button
+           
               onClick={() => setShowModal(false)}
               className="mt-6 px-6 py-2 bg-indigo-600 text-white font-semibold rounded-xl shadow-md hover:bg-indigo-700 transition"
             >
