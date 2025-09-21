@@ -34,6 +34,7 @@ export async function POST(req) {
       appointmentDate: body.appointmentDate,
       address: body.address,
       status: "Pending",
+      appointmentStatus:"Pending"
     });
 
     await appointment.save(); // Save appointment immediately

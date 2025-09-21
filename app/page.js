@@ -558,8 +558,8 @@ export default function HomePage() {
           </thead>
           <tbody>
             {app.map((pat, index) => (
-              <tr key={pat.appointmentId || index} className="text-black">
-                <td className="py-2">{pat.appointmentId}</td>
+              <tr key={index} className="text-black">
+                <td className="py-2">{index+1}</td>
                 <td>{pat.doctorName}</td>
                 <td>{pat?.appointmentDate.split("T")[0]}</td>
                 <td>{pat.appointmentTime||"N-A"}</td>
@@ -573,7 +573,7 @@ export default function HomePage() {
                         : "bg-yellow-100 text-yellow-600"
                     }`}
                   >
-                    {pat.status}
+                    {pat.appointmentStatus}
                   </span>
                 </td>
                 <td>
