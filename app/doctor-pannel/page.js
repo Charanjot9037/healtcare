@@ -2,8 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { uploadToCloudinary } from "../lib/config/uploadToCloudiary";
 export default function DoctorLandingPage() {
   const [user, setuser] = useState(null);
+  const [doctorep,setdoctorrep]=useState(null);
+  const[loading,setLoading]=useState(null)
 const router=useRouter();
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -16,7 +19,70 @@ const router=useRouter();
       }
     }
   }, []);
+ 
+//   const changeFileHandler = async (e) => {
+//     const file = e.target.files?.[0];
+//     if (!file) return;
 
+//     setLoading(true);
+//     try {
+//       const url = await uploadToCloudinary(file);
+//       setdoctorrep((prev) => ({ ...prev,url }));
+//       alert("File uploaded successfully");
+//  try {
+//       const res = await fetch("/api/doctorpres", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({
+//           id:app._id,
+//           prescription:doctorep
+          
+//         }),
+//       });
+
+//       if (!res.ok) throw new Error("Failed to save meeting link");
+
+//       const data = await res.json();
+    
+//     alert(" report submitted ");
+//     } catch (err) {
+//       console.error(err);
+//       alert("Error creating meeting link");
+//     }
+
+
+
+
+
+//     } catch (err) {
+//       console.error(err);
+//       alert("Failed to upload file");
+//     } finally {
+//       setLoading(false);
+//     }
+
+
+
+
+
+
+
+
+
+
+//   };
+
+
+
+
+
+  const handleReportClick = (e) => {
+    const link = e.target.value;
+    if (link) {
+      window.open(link, "_blank"); // open in new tab
+    }
+  };
+ 
   const [app, setApp] = useState(null);
   useEffect(() => {
     const fetchAppointment = async () => {
@@ -162,7 +228,9 @@ const router=useRouter();
                   <th className="text-left py-3 px-6">Patient Name</th>
                   <th className="text-left py-3 px-6">Date</th>
                   <th className="text-left py-3 px-6">Status</th>
+                    <th className="text-left py-3 px-6">Test Reports</th>
                   <th className="text-left py-3 px-6">Meeting</th>
+                  <th className="text-left py-3 px-6">Give Prescription Report</th>
                 </tr>
               </thead>
               <tbody>
@@ -194,21 +262,33 @@ const router=useRouter();
                       </span>
                     </td>
                     <td className="py-4 px-6">
-                      {/* <button
-                        className="px-3 py-1 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition"
-                        onClick={() => {
-                          setSelectedPatient({
-                            id: app._id,
-                            time: app.appointmentTime,
-                            patientName: app.firstName,
-                            status: app.status,
-                          });
-                          setShowModal(true); // show modal
-                        }}
-                      >
-                        Create
-                      </button> */}
-                      {app?.appointmentStatus === "confirm" ? (
+                   
+    <div className="flex flex-col space-y-2">
+    
+
+      {app?.reports.length === 0 ? (
+        <p className="text-gray-500">No reports</p>
+      ) : (
+        <select
+          onChange={handleReportClick}
+          className="p-2 border rounded-lg shadow-sm"
+        >
+          <option value="">View Report</option>
+          {app.reports.map((link, index) => (
+            <option key={index} value={link}>
+              Report {index + 1}
+            </option>
+          ))}
+        </select>
+      )}
+    </div>
+
+
+
+                      
+
+                    </td>
+                    <td>{app?.appointmentStatus === "confirm" ? (
   <button
     className="px-3 py-1 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition"
     onClick={() => {
@@ -234,9 +314,58 @@ const router=useRouter();
   >
     Create
   </button>
-)}
+)}</td>
+<td>
+    <div className="flex flex-col">
+            <label className="mb-2 font-medium text-gray-700">Report</label>
+         
+            {doctorep && <p className="mt-2 text-sm text-gray-600">File uploaded</p>}
 
-                    </td>
+<input
+  type="file"
+  name="image"
+  accept="image/*,application/pdf"
+  onChange={async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setLoading(true);
+    try {
+      // Upload to Cloudinary
+      const url = await uploadToCloudinary(file);
+
+      setdoctorrep(url);
+      alert("File uploaded successfully");
+
+      // Call API directly
+      const res = await fetch("/api/doctorpres", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: app._id,
+          prescription: url,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Failed to save report");
+
+      const data = await res.json();
+      alert("Report submitted");
+    } catch (err) {
+      console.error(err);
+      alert("Error uploading report");
+    } finally {
+      setLoading(false);
+    }
+  }}
+/>
+
+
+
+
+            
+          </div>
+</td>
                   </tr>
                 ))}
               </tbody>
@@ -317,6 +446,7 @@ console.log(meetingLink);
           status:"confirm",
           time: selectedPatient.time,
           meetingLink,
+          
         }),
       });
 

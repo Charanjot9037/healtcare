@@ -18,6 +18,7 @@ export async function POST(req) {
     if (!doctor) {
       return NextResponse.json({ error: "Doctor not found" }, { status: 404 });
     }
+    console.log(body.reports)
 
     // 2️⃣ Create appointment with "Pending" status
     const appointment = new Appointment({
@@ -33,6 +34,7 @@ export async function POST(req) {
       gender: body.gender,
       appointmentDate: body.appointmentDate,
       address: body.address,
+      reports:body.reports,
       status: "Pending",
       appointmentStatus:"Pending"
     });
