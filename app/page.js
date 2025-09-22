@@ -298,12 +298,14 @@
 //     </div>
 //   );
 // }
+
+
 "use client";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Script from "next/script"; // ✅ Import Script for external scripts
+import Script from "next/script";
 import Navbar from "./components/navbar";
 
 export default function HomePage() {
@@ -325,7 +327,7 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, [length]);
 
-  // ----- Doctors (from API) -----
+  // ----- Doctors -----
   const [doctors, setDoctors] = useState([]);
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -434,37 +436,40 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="relative w-full min-h-[600px] flex flex-col md:flex-row items-center justify-between bg-white text-gray-800 px-6 md:px-20 py-12 md:py-16">
-        {/* Left */}
+        {/* Left (Elegant & Attractive) */}
         <div className="flex-1 space-y-6 text-center md:text-left">
-          <h1 className="text-3xl md:text-5xl font-extrabold leading-tight text-purple-700">
-            Empowering Health , <br /> Eliminating Drugs <br /> PHARMACEUTICALS EASY
+          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-transparent drop-shadow-sm">
+            Towards a Healthy Future
+            <br /> Drug-Free Society
           </h1>
-          <p className="text-gray-600 max-w-lg mx-auto md:mx-0">
-            By focusing on our customer and by establishing a relationship of trust,
-            we are able to deliver vital treatments to patients, pharmacies and
-            healthcare professionals who are in need of unlicensed medicines.
+          <p className="text-lg md:text-xl text-gray-600 font-light max-w-md mx-auto md:mx-0">
+            Trusted healthcare solutions with a commitment to a society free from
+            harmful substances.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-6">
             <Link
               href="/about"
-              className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-full shadow hover:bg-purple-700 transition text-center"
+              className="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-500 text-white font-semibold rounded-full shadow hover:opacity-90 transition text-center"
             >
-              About Us
+              Learn More
             </Link>
             <Link
               href="/ecommerce"
               className="px-6 py-3 border-2 border-purple-600 text-purple-600 rounded-full hover:bg-purple-600 hover:text-white transition text-center"
             >
-              Say no to Drugs !
+              Take Action
             </Link>
           </div>
         </div>
 
-        {/* Right */}
+        {/* Right (Lottie Animation) */}
         <div className="flex-1 flex justify-center mt-10 md:mt-0">
           <dotlottie-wc
             src="https://lottie.host/2561448b-e814-4774-b182-0d498df57687/5Oyo7vYty0.lottie"
-            style={{ width: "600px", height: "600px" }}
+            style={{
+              width: "600px",
+              height: "600px",
+            }}
             autoplay
             loop
           ></dotlottie-wc>
