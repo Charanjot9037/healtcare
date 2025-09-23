@@ -4,7 +4,9 @@ import bcrypt from "bcrypt";
 import User from "@/app/lib/models/User";
 import Doctor from "@/app/lib/models/Doctor";
 import dbConnect from "@/app/lib/config/db";
+import { sendDoctorCredentials } from "@/app/lib/helper/mail";
 import { NextResponse } from "next/server";
+import { Mail } from "lucide-react";
 
 export async function POST(req) {
   try {
@@ -56,6 +58,7 @@ console.log(doc_id);
       imageUrl,
       doc_id
     });
+     await sendDoctorCredentials({ to: email, password });
 
     return NextResponse.json({ success: true, message: "Doctor created",doctorId: doctor._id  });
   } catch (err) {

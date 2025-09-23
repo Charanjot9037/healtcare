@@ -41,6 +41,10 @@ export default function DoctorLandingPage() {
     fetchAppointment();
   }, [user]);
 
+
+
+  
+
   const [appointments, setAppointments] = useState([
     {
       id: 1,
@@ -180,9 +184,10 @@ export default function DoctorLandingPage() {
                         className="px-3 py-1 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition"
                         onClick={() => {
                           setSelectedPatient({
-                            id: app._id,
+                            ...app,
                             time: app.appointmentTime,
                             patientName: app.firstName,
+                            email:app.email,
                             status: app.status,
                           });
                           setShowModal(true); // show modal
@@ -206,9 +211,9 @@ export default function DoctorLandingPage() {
             <h2 className="text-2xl font-bold mb-4 text-white drop-shadow-md">
               {selectedPatient.patientName}
             </h2>
-            <p className="text-white/90">
+            {/* <p className="text-white/90">
               <strong>Time:</strong> {selectedPatient.time}
-            </p>
+            </p> */}
             <p className="text-white/90">
               <strong>Status:</strong> {selectedPatient.status}
             </p>
@@ -240,13 +245,56 @@ export default function DoctorLandingPage() {
                 <option value="Cancelled">Cancelled</option>
               </select>
             </div>
+            <div className="mt-4">
+  <label className="block text-sm font-semibold mb-2 text-white/90">
+    Select Meeting Time:
+  </label>
+  <input
+    type="time"
+    value={selectedPatient.time || ""}
+    onChange={(e) =>
+      setSelectedPatient((prev) => ({
+        ...prev,
+        time: e.target.value,
+      }))
+    }
+    className="px-4 py-2 border border-white/50 bg-white/30 text-black rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 backdrop-blur-md"
+  />
+</div>
+
 
             <button
-              onClick={() => setShowModal(false)}
-              className="mt-6 px-6 py-2 bg-indigo-600 text-white font-semibold rounded-xl shadow-md hover:bg-indigo-700 transition"
-            >
-              Close
-            </button>
+  onClick={async () => {
+    try {
+      // Generate meeting link dynamically
+      const meetingLink = `${window.location.origin}/room/${selectedPatient._id}`;
+
+      // Call API to send email
+      await fetch("/api/sendAppointmentEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          patientEmail: selectedPatient.email,   
+          patientName: selectedPatient.patientName,
+          doctorName: app?.[0]?.doctorName || "Doctor",
+          appointmentDate: selectedPatient.appointmentDate,
+          appointmentTime: selectedPatient.time,
+          status: selectedPatient.status,
+          meetingLink,
+        }),
+      });
+
+      console.log("✅ Email sent successfully");
+    } catch (err) {
+      console.error("❌ Failed to send email:", err);
+    }
+
+    setShowModal(false); 
+  }}
+  className="mt-6 px-6 py-2 bg-indigo-600 text-white font-semibold rounded-xl shadow-md hover:bg-indigo-700 transition"
+>
+  Close
+</button>
           </div>
         </div>
       )}
