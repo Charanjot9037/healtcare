@@ -11,9 +11,18 @@ const appointmentSchema = new mongoose.Schema(
     lastName: { type: String, required: true },
     email: { type: String, required: true },
     mobile: { type: String, required: true },
+     reports: {
+    type: [String],   // ✅ Array of strings
+    default: [],      // Optional: default empty array
+  },
+     doctorreports: {
+    type:String,   // ✅ Array of strings
+        // Optional: default empty array
+  },
     dob: { type: Date },
     gender: { type: String },
-
+    meetinglink: { type: String },
+  appointmentStatus: { type: String, required: true },
     appointmentDate: { type: Date, required: true },
     appointmentTime: { type: String,default: null },
     address: { type: String },

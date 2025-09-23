@@ -9,7 +9,7 @@ const page = () => {
   const mymeeting=async(element)=>{
 const appID=288120298;
 const serverSecret="0b1b76157ccc08632c164766433f85d1";
- const kitToken =  ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, id?.toString()||'', Date.now().toString(),"jot");
+ const kitToken =  ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, id?.toString()||'', Date.now().toString(),"enter name");
       const zp = ZegoUIKitPrebuilt.create(kitToken); 
       zp.joinRoom({
            turnOnCameraWhenJoining: false,
@@ -42,6 +42,8 @@ useEffect(()=>{
   
   
 },[id])
+
+
    
   return (
    <div className='h-100vh w-100vw' ref={containerref}/>
