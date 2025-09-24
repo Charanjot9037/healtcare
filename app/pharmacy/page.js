@@ -33,7 +33,7 @@ export default function AdminPharmacy() {
       <div className="bg-white shadow-lg rounded-xl overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-purple-100">
-            <tr className="text-left text-purple-800">
+            <tr className="text-left bg-purple-200 text-purple-900">
               <th className="py-3 px-4">ID</th>
               <th className="py-3 px-4">Medicine Name</th>
               <th className="py-3 px-4">Expiry Date</th>
