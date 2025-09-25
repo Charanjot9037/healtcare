@@ -42,6 +42,12 @@ const Navbar = () => {
           >
             Home
           </Link>
+            <Link
+            href="/task"
+            className="hover:text-yellow-300 transition-colors duration-200"
+          >
+            DAILY TASK
+          </Link>
           <Link
             href="/userappnt/jot"
             className="hover:text-yellow-300 transition-colors duration-200"

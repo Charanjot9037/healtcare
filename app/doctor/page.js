@@ -54,8 +54,8 @@ const router=useRouter();
             </tr>
           </thead>
           <tbody>
-            {doctors.map((doc) => (
-              <tr key={doc.id} className="border-b">
+            {doctors.map((doc,index) => (
+              <tr key={index} className="border-b">
                 {/* <td className="py-4">{doc.id}</td> */}
                 <td className="py-4">{doc.name}</td>
                 <td>{doc.mobile}</td>
