@@ -305,7 +305,10 @@ export default function DoctorPrescription() {
     );
 
     // Capture screenshot
-    const canvas = await html2canvas(element, { scale: 3 });
+    const canvas = await html2canvas(element,{ 
+  scale: 3,
+  useCORS: true,   // ✅ allow cross-origin images
+});
     const image = canvas.toDataURL("image/jpeg");
 
     const a = document.createElement("a");
@@ -470,6 +473,7 @@ export default function DoctorPrescription() {
           {/* Signature */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginTop: "20px" }}>
             <img
+              crossOrigin="anonymous"
               src={prescribe?.app?.doctorId?.signature}
               alt="Doctor Signature"
               width={200}
