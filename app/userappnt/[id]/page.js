@@ -1,9 +1,8 @@
-
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation";
-const appointment = [
+import { useRouter, useParams } from "next/navigation";
+
+const appointments = [
   {
     appointmentId: "A1001",
     doctorId: "D200",
@@ -37,7 +36,6 @@ const appointment = [
   {
     appointmentId: "A1003",
     doctorId: "D202",
-    date: "29-09-2025",
     doctorName: "Dr. Amit Patel",
     specialization: "Psychiatrist",
     patientId: "P309",
@@ -48,89 +46,87 @@ const appointment = [
     treatmentType: "Counseling",
     status: "Cancelled",
     office: "Patel Hospital, Delhi",
+    date: "29-09-2025",
   },
 ];
 
 const Page = () => {
   const router = useRouter();
-const {id}=useParams();
+  const { id } = useParams();
+
   return (
-    <div className="bg-white w-screen h-screen min-h-screen">
-   <div className="max-w-4xl mx-auto py-8">
-<h6 className="text-black">HI {id}</h6>
+    <div className="bg-gray-50 min-h-screen w-screen py-10 px-6">
+      <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-2xl p-10">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          Hi <span className="text-purple-600">{id}</span>, here are your
+          appointments
+        </h2>
 
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="text-left border-b text-gray-600">
-            <th className="py-2">ID</th>
-            <th>Doctor Name</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Status</th>
-            <th>Meeting</th>
-          </tr>
-        </thead>
-        <tbody>
-          {appointment.map((pat) => (
-            <tr key={pat.appointmentId} className="border-b text-black">
-              <td className="py-2">{pat.appointmentId}</td>
-              <td>{pat.doctorName}</td>
-              <td>{pat.date}</td>
-              <td>{pat.startTime}</td>
-              {/* <td>
-                <span
-                  className={`px-2 py-1 rounded text-xs ${
-                    pat.status === "Confirmed"
-                      ? "bg-green-100 text-green-600"
-                      : pat.status === "Cancelled"
-                      ? "bg-red-100 text-red-600"
-                      : "bg-yellow-100 text-yellow-600"
-                  }`}
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-100 text-left text-gray-700 text-sm">
+                <th className="py-3 px-5">ID</th>
+                <th className="py-3 px-5">Doctor Name</th>
+                <th className="py-3 px-5">Date</th>
+                <th className="py-3 px-5">Time</th>
+                <th className="py-3 px-5">Status</th>
+                <th className="py-3 px-5">Meeting</th>
+              </tr>
+            </thead>
+            <tbody>
+              {appointments.map((pat, index) => (
+                <tr
+                  key={pat.appointmentId}
+                  className={`${
+                    index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                  } hover:bg-purple-50 transition`}
                 >
-                  {pat.status}
-                </span>
-              </td>
-              <td>
-                <button
-                  onClick={() => router.push("/meeting")}
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs shadow transition"
-                >
-                  Join
-                </button>
-              </td> */}
-              <td>
-  <span
-    className={`px-2 py-1 rounded text-xs ${
-      pat.status === "Confirmed"
-        ? "bg-green-100 text-green-600"
-        : pat.status === "Cancelled"
-        ? "bg-red-100 text-red-600"
-        : "bg-yellow-100 text-yellow-600"
-    }`}
-  >
-    {pat.status}
-  </span>
-</td>
-<td>
-  <button
-    // Disable if status is Cancelled or Pending
-    disabled={pat.status !== "Confirmed"}
-    onClick={() => router.push("/meeting")}
-    className={`bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs shadow transition
-      ${pat.status !== "Confirmed" ? "opacity-50 cursor-not-allowed" : ""}
-    `}
-  >
-    Join
-  </button>
-</td>
+                  <td className="py-3 px-5 text-gray-800 font-medium">
+                    {pat.appointmentId}
+                  </td>
+                  <td className="px-5 text-gray-700">{pat.doctorName}</td>
+                  <td className="px-5 text-gray-700">{pat.date}</td>
+                  <td className="px-5 text-gray-700">{pat.startTime}</td>
 
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                  {/* Status Badge */}
+                  <td className="px-5">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold
+                        ${
+                          pat.status === "Confirmed"
+                            ? "bg-green-100 text-green-700"
+                            : pat.status === "Cancelled"
+                            ? "bg-red-100 text-red-600"
+                            : "bg-yellow-100 text-yellow-600"
+                        }`}
+                    >
+                      {pat.status}
+                    </span>
+                  </td>
+
+                  {/* Join Button */}
+                  <td className="px-5">
+                    <button
+                      disabled={pat.status !== "Confirmed"}
+                      onClick={() => router.push("/meeting")}
+                      className={`px-4 py-1.5 rounded-lg text-sm font-medium shadow-md transition
+                        ${
+                          pat.status === "Confirmed"
+                            ? "bg-purple-600 text-white hover:bg-purple-700"
+                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        }`}
+                    >
+                      Join
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    </div>
- 
   );
 };
 

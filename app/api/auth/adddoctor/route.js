@@ -4,7 +4,9 @@ import bcrypt from "bcrypt";
 import User from "@/app/lib/models/User";
 import Doctor from "@/app/lib/models/Doctor";
 import dbConnect from "@/app/lib/config/db";
+import { sendDoctorCredentials } from "@/app/lib/helper/mail";
 import { NextResponse } from "next/server";
+import { Mail } from "lucide-react";
 
 export async function POST(req) {
   try {
@@ -19,9 +21,10 @@ export async function POST(req) {
       gender,
       specialization,
       imageUrl,
-      doc_id
+      doc_id,
+       signature
     } = await req.json();
-console.log(doc_id);
+console.log(signature,imageUrl);
     if (!name || !email || !password || !mobile || !degree || !fees || !licenseNumber || !gender || !specialization) {
       return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
     }
@@ -54,8 +57,10 @@ console.log(doc_id);
       gender,
       specialization,
       imageUrl,
-      doc_id
+      doc_id,
+       signature
     });
+     await sendDoctorCredentials({ to: email, password });
 
     return NextResponse.json({ success: true, message: "Doctor created",doctorId: doctor._id  });
   } catch (err) {
