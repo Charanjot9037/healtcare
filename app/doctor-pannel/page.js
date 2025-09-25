@@ -1,5 +1,4 @@
 
-<<<<<<< HEAD
 // "use client";
 
 // import { useEffect, useState } from "react";
@@ -488,8 +487,6 @@
 //     </div>
 //   );
 // }   
-=======
->>>>>>> 52b7c0b0a610df1be6e3d72e48c5057f67a6b1ad
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -522,23 +519,20 @@ export default function DoctorLandingPage() {
     }
   }, []);
 
-<<<<<<< HEAD
   // Fetch appointments
-=======
 
 
 
 
 
-  const handleReportClick = (e) => {
-    const link = e.target.value;
-    if (link) {
-      window.open(link, "_blank"); // open in new tab
-    }
-  };
+  // const handleReportClick = (e) => {
+  //   const link = e.target.value;
+  //   if (link) {
+  //     window.open(link, "_blank"); // open in new tab
+  //   }
+  // };
  
-  const [app, setApp] = useState(null);
->>>>>>> 52b7c0b0a610df1be6e3d72e48c5057f67a6b1ad
+  // const [app, setApp] = useState(null);
   useEffect(() => {
     const fetchAppointment = async () => {
       if (!user) return;
@@ -633,155 +627,9 @@ export default function DoctorLandingPage() {
                     <th className="text-left py-3 px-6">Date</th>
                     <th className="text-left py-3 px-6">Status</th>
                     <th className="text-left py-3 px-6">Test Reports</th>
-<<<<<<< HEAD
                     <th className="text-left py-3 px-6">Meeting</th>
                     <th className="text-left py-3 px-6">Add Prescription</th>
                       <th className="text-left py-3 px-6">Write  Prescription</th>
-=======
-                  <th className="text-left py-3 px-6">Meeting</th>
-                  <th className="text-left py-3 px-6">Give Prescription Report</th>
-                </tr>
-              </thead>
-              <tbody>
-                {app?.map((app, index) => (
-                  <tr
-                    key={index}
-                    className={`cursor-pointer rounded-xl bg-white/40 backdrop-blur-md shadow-md
-                    transition transform duration-500
-                    ${
-                      animate
-                        ? "opacity-100 translate-y-0"
-                        : "opacity-0 translate-y-4"
-                    }
-                    hover:scale-[1.01] hover:bg-white/60`}
-                    style={{ transitionDelay: `${index * 120}ms` }}
-                  >
-                    <td className="py-4 px-6 font-semibold">
-                      {app.appointmentTime || "N/A"}
-                    </td>
-                    <td className="py-4 px-6">{app.firstName}</td>
-                    <td className="py-4 px-6 italic">{app.appointmentDate}</td>
-                    <td className="py-4 px-6">
-                      <span
-                        className={`inline-block px-4 py-1 rounded-full text-sm font-semibold shadow-sm ${statusColor(
-                          app.status
-                        )}`}
-                      >
-                        {app?.appointmentStatus}
-                      </span>
-                    </td>
-                    <td className="py-4 px-6">
-                   
-    <div className="flex flex-col space-y-2">
-    
-
-      {app?.reports.length === 0 ? (
-        <p className="text-gray-500">No reports</p>
-      ) : (
-        <select
-          onChange={handleReportClick}
-          className="p-2 border rounded-lg shadow-sm"
-        >
-          <option value="">View Report</option>
-          {app.reports.map((link, index) => (
-            <option key={index} value={link}>
-              Report {index + 1}
-            </option>
-          ))}
-        </select>
-      )}
-    </div>
-
-
-
-                      
-
-                    </td>
-                    <td>
-                      {app?.appointmentStatus === "confirm" ? (
-  <button
-    className="px-3 py-1 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition"
-    onClick={() => {
-      // redirect to meeting page with router
-      router.push(`${app.meetinglink}`); 
-      // or use meetingLink if you stored it in DB: router.push(app.meetingLink)
-    }}
-  >
-    Join
-  </button>
-) : (
-  <button
-    className="px-3 py-1 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition"
-    onClick={() => {
-      setSelectedPatient({
-        id: app._id,
-        time: app.appointmentTime,
-        patientName: app.firstName,
-        status: app.status,
-      });
-      setShowModal(true);
-    }}
-  >
-    Create
-  </button>
-)}
- 
-
-
-
-</td>
-<td>
-    <div className="flex flex-col">
-            <label className="mb-2 font-medium text-gray-700">Report</label>
-         
-            {doctorep && <p className="mt-2 text-sm text-gray-600">File uploaded</p>}
-
-<input
-  type="file"
-  name="image"
-  accept="image/*,application/pdf"
-  onChange={async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setLoading(true);
-    try {
-      // Upload to Cloudinary
-      const url = await uploadToCloudinary(file);
-
-      setdoctorrep(url);
-      alert("File uploaded successfully");
-
-      // Call API directly
-      const res = await fetch("/api/doctorpres", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: app._id,
-          prescription: url,
-        }),
-      });
-
-      if (!res.ok) throw new Error("Failed to save report");
-
-      const data = await res.json();
-      alert("Report submitted");
-    } catch (err) {
-      console.error(err);
-      alert("Error uploading report");
-    } finally {
-      setLoading(false);
-    }
-  }}
-/>
-
-
-
-
-            
-          </div>
-</td>
->>>>>>> 52b7c0b0a610df1be6e3d72e48c5057f67a6b1ad
                   </tr>
                 </thead>
                 <tbody>
