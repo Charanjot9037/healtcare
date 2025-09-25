@@ -10,6 +10,7 @@ const DoctorSchema = new mongoose.Schema({
   gender: { type: String, required: true, enum: ["Male", "Female", "Other"] },
   specialization: { type: String, required: true },
   imageUrl: { type: String }, // store image URL or path
+   signature: { type: String },
 }, { timestamps: true });
 
 const Doctor = mongoose.models.Doctor || mongoose.model("Doctor", DoctorSchema);

@@ -21,9 +21,10 @@ export async function POST(req) {
       gender,
       specialization,
       imageUrl,
-      doc_id
+      doc_id,
+       signature
     } = await req.json();
-console.log(doc_id);
+console.log(signature,imageUrl);
     if (!name || !email || !password || !mobile || !degree || !fees || !licenseNumber || !gender || !specialization) {
       return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
     }
@@ -56,7 +57,8 @@ console.log(doc_id);
       gender,
       specialization,
       imageUrl,
-      doc_id
+      doc_id,
+       signature
     });
      await sendDoctorCredentials({ to: email, password });
 
