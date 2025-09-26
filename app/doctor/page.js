@@ -51,35 +51,25 @@ export default function AdminDoctors() {
               <th className="py-3 px-4 text-left">Action</th>
             </tr>
           </thead>
-          <tbody>
-<<<<<<< HEAD
-            {doctors.map((doc,index) => (
-              <tr key={index} className="border-b">
-                {/* <td className="py-4">{doc.id}</td> */}
-                <td className="py-4">{doc.name}</td>
-                <td>{doc.mobile}</td>
-                <td>₹{doc.fees}</td>
-                {/* <td>
-                  <span
-                    className={`px-2 py-1 rounded text-xs ${
-                      doc.status === "Online"
-                        ? "bg-green-100 text-green-600"
-                        : "bg-red-100 text-red-600"
-                    }`}
-                  >
-                    {doc.status}
-                  </span>
-                </td> */}
-                <td>
-                  <button
-                    onClick={() => deleteDoctor(doc.id)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs shadow transition"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            )}
+          
+            
+<tbody>
+    {doctors?.map((doc, index) => (
+      <tr key={index} className="border-b">
+        <td className="py-4">{doc.name}</td>
+        <td>{doc.mobile}</td>
+        <td>₹{doc.fees}</td>
+        <td>
+          <button
+            onClick={() => deleteDoctor(doc.id)}
+            className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs shadow transition"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    ))}
+  
           </tbody>
         </table>
       </div>

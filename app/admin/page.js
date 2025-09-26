@@ -55,7 +55,7 @@ const Dashboard = () => {
           <Link href="/admin" className="block hover:bg-purple-700 p-3 rounded transition">
             Dashboard
           </Link>
-          <Link href="/adddoctor" className="block hover:bg-purple-700 p-3 rounded transition">
+          <Link href="/doctor" className="block hover:bg-purple-700 p-3 rounded transition">
             Doctor
           </Link>
           <Link href="/pharmacy" className="block hover:bg-purple-700 p-3 rounded transition">
