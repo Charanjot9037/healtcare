@@ -136,7 +136,7 @@ export default function HomePage() {
 
     fetchAppointment();
   }, [user]);
-
+console.log(app);
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
@@ -275,31 +275,21 @@ export default function HomePage() {
                   </button>
                 </td>
                 <td>
-                  <div className="flex flex-col space-y-2">
-                    {(!pat?.doctorreports || pat.doctorreports.length === 0) ? (
-                      <p className="text-gray-500">No reports</p>
-                    ) : (
-                      <select
-                        onChange={handleReportClick}
-                        className="p-2 border rounded-lg shadow-sm"
-                      >
-                        <option value="">View Report</option>
-                        {/* {pat?.doctorreports?.map((link, idx) => (
-                          <option key={idx} value={link}>
-                            Report {idx + 1}
-                          </option>
-                        ))} */}
-                        {Array.isArray(pat?.doctorreports) &&
-  pat.doctorreports.map((link, idx) => (
-    <option key={idx} value={link}>
-      Report {idx + 1}
-    </option>
-  ))
-}
+               <div className="flex flex-col space-y-2">
+  {pat?.doctorreports ? (
+    <a
+      href={pat.doctorreports}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-600 hover:underline"
+    >
+      View Report
+    </a>
+  ) : (
+    <p className="text-gray-500">No report available</p>
+  )}
+</div>
 
-                      </select>
-                    )}
-                  </div>
                 </td>
               </tr>
             ))}
