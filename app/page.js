@@ -243,7 +243,7 @@ export default function HomePage() {
             </tr>
           </thead>
           <tbody>
-            {app?.map((pat, index) => (
+            {app.map((pat, index) => (
               <tr key={index} className="text-black">
                 <td className="py-2">{index + 1}</td>
                 <td>{pat.doctorName}</td>
@@ -264,7 +264,7 @@ export default function HomePage() {
                 </td>
                 <td>
                   <button
-                    onClick={() => router.push(`${pat?.meetinglink}`)}
+                    onClick={() => router.push(`${pat.meetinglink}`)}
                     className={`bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded-lg text-xs shadow transition ${
                       pat.appointmentStatus !== "confirm"
                         ? "opacity-50 cursor-not-allowed"
@@ -283,12 +283,12 @@ export default function HomePage() {
                         onChange={handleReportClick}
                         className="p-2 border rounded-lg shadow-sm"
                       >
-                        {/* <option value="">View Report</option>
-                        {pat?.doctorreports?.map((link, idx) => (
+                        <option value="">View Report</option>
+                        {pat.doctorreports.map((link, idx) => (
                           <option key={idx} value={link}>
                             Report {idx + 1}
                           </option>
-                        ))} */}
+                        ))}
                       </select>
                     )}
                   </div>
