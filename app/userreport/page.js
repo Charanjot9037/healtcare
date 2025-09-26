@@ -97,7 +97,7 @@ const Page = () => {
       <Navbar />
       <div className="max-w-screen mx-auto bg-white shadow-lg rounded-2xl p-10">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          All appointments
+          All reports
         </h2>
 
         <div className="overflow-x-auto">
@@ -107,11 +107,8 @@ const Page = () => {
                 <th className="py-3 px-5">ID</th>
                 <th className="py-3 px-5">Doctor Name</th>
                 <th className="py-3 px-5">Date</th>
-                <th className="py-3 px-5">Time</th>
-                <th className="py-3 px-5">Status</th>
-                <th className="py-3 px-5">Meeting</th>
-                  
-                     <th className="py-3 px-5">submitted Reports</th>
+                   <th className="py-3 px-5">Prescription</th>
+                     <th className="py-3 px-5">Reports</th>
               </tr>
             </thead>
             <tbody >
@@ -130,48 +127,28 @@ const Page = () => {
                     {pat.appointmentDate.split("T")[0]}
                   </td>
                   {/* <td className="px-5 text-gray-700">{pat.appointmentTime}</td> */}
-                  <td className="px-5 text-gray-700">
-                    {new Date(
-                      `1970-01-01T${pat.appointmentTime}:00`
-                    ).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: true,
-                    })}
-                  </td>
+                
 
-                  {/* Status Badge */}
-                  <td className="px-5">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold
-                        ${
-                          pat.appointmentStatus === "confirm"
-                            ? "bg-green-100 text-green-700"
-                            : pat.status === "Cancelled"
-                            ? "bg-red-100 text-red-600"
-                            : "bg-yellow-100 text-yellow-600"
-                        }`}
-                    >
-                      {pat?.appointmentStatus}
-                    </span>
-                  </td>
+               
 
-                  {/* Join Button */}
-                  <td className="px-5">
-                    <Link
-                      disabled={pat.appointmentStatus !== "confirm"}
-                      href={pat?.meetinglink}
-                      className={`px-4 py-1.5 rounded-lg text-sm font-medium shadow-md transition
-                        ${
-                          pat.appointmentStatus === "confirm"
-                            ? "bg-purple-600 text-white hover:bg-purple-700"
-                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        }`}
-                    >
-                      Join
-                    </Link>
+            
+              
+                  <td>
+                    <div className="flex flex-col space-y-2">
+                      {pat?.doctorreports ? (
+                        <a
+                          href={pat.doctorreports}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 px-2 py-1 rounded-lg border-1 w-1/2 text-center decoration-none "
+                        >
+                          View
+                        </a>
+                      ) : (
+                        <p className="text-gray-500">No Prescription available</p>
+                      )}
+                    </div>
                   </td>
-                 
                   <td>
                     <select
                             onChange={(e) => {

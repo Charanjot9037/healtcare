@@ -55,7 +55,7 @@ const Navbar = () => {
             Appointments
           </Link>
           <Link
-            href="#"
+            href="/userreport"
             className="hover:text-yellow-300 transition-colors duration-200"
           >
             Reports
