@@ -7,7 +7,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { uploadToCloudinary } from "../lib/config/uploadToCloudiary";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react"; 
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { FaPencilAlt } from "react-icons/fa";
 export default function DoctorLandingPage() {
   const [user, setUser] = useState(null);
@@ -43,7 +43,7 @@ export default function DoctorLandingPage() {
         const res = await fetch("/api/getDoctor", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: user}),
+          body: JSON.stringify({ userId: user }),
         });
         if (!res.ok) throw new Error("Failed to fetch doctor profile");
         const data = await res.json();
@@ -98,19 +98,20 @@ export default function DoctorLandingPage() {
     if (link) window.open(link, "_blank");
   };
 
-const filteredAppointments = app.filter((appt) => {
-  const matchesSearch =
-    appt.firstName?.toLowerCase().includes(search.toLowerCase()) ||
-    appt.appointmentTime?.toLowerCase().includes(search.toLowerCase()) ||
-    appt.appointmentStatus?.toLowerCase().includes(search.toLowerCase());
+  const filteredAppointments = app.filter((appt) => {
+    const matchesSearch =
+      appt.firstName?.toLowerCase().includes(search.toLowerCase()) ||
+      appt.appointmentTime?.toLowerCase().includes(search.toLowerCase()) ||
+      appt.appointmentStatus?.toLowerCase().includes(search.toLowerCase());
 
-  const matchesFilter =
-    filter === "All" || appt.appointmentStatus?.toLowerCase() === filter.toLowerCase();
+    const matchesFilter =
+      filter === "All" ||
+      appt.appointmentStatus?.toLowerCase() === filter.toLowerCase();
 
-  return matchesSearch && matchesFilter;
-});
+    return matchesSearch && matchesFilter;
+  });
 
-const fileInputRef = useRef(null);
+  const fileInputRef = useRef(null);
   return (
     <div className="h-screen flex">
       {/* Sidebar Dashboard */}
@@ -134,7 +135,6 @@ const fileInputRef = useRef(null);
           </p>
         </div>
 
-
         <nav className="flex flex-col gap-4 mt-10">
           <button
             onClick={() => router.push("/doctor-pannel")}
@@ -142,25 +142,24 @@ const fileInputRef = useRef(null);
           >
             Home
           </button>
-        
+
           <button
             onClick={() => router.push("/docapp")}
             className="px-4 py-2 rounded-lg text-left hover:bg-purple-600 transition-all duration-300"
           >
             Appointment
           </button>
-           {/* ✅ Lottie Animation */}
-        <div className="mt-5">
-          <DotLottieReact
-            src="https://lottie.host/6c28747a-5392-4e6e-af67-57692a6563bc/tjh7KP59pW.lottie"
-            loop
-            autoplay
-            className="w-full h-40"
-          />
-        </div>
+          {/* ✅ Lottie Animation */}
+          <div className="mt-5">
+            <DotLottieReact
+              src="https://lottie.host/6c28747a-5392-4e6e-af67-57692a6563bc/tjh7KP59pW.lottie"
+              loop
+              autoplay
+              className="w-full h-40"
+            />
+          </div>
         </nav>
       </aside>
-      
 
       {/* Main Content */}
       <main className="flex-1 bg-gradient-to-br from-white via-purple-100 to-purple-200 p-6 md:p-0">
@@ -190,7 +189,6 @@ const fileInputRef = useRef(null);
                 <option value="All">All</option>
                 <option value="confirm">confirm</option>
                 <option value="Pending">Pending</option>
-              
               </select>
             </div>
 
@@ -200,7 +198,7 @@ const fileInputRef = useRef(null);
                 No appointments found.
               </p>
             ) : (
-              <div >
+              <div>
                 <table className="border-2-black w-full overflow-y-auto ">
                   <thead>
                     <tr className="text-sm uppercase tracking-wide text-purple-700">
@@ -255,31 +253,31 @@ const fileInputRef = useRef(null);
                               ))}
                             </select>
                           )} */}
-                          {Array.isArray(appt.reports) && appt.reports.length > 0 ? (
-  <select
-    onChange={(e) => {
-      const link = e.target.value;
-      if (link) {
-        window.open(link, "_blank"); // Opens the report in a new tab
-        e.target.value = ""; // Reset select to default after opening
-      }
-    }}
-    className="px-3 py-1 text-gray-700 border border-purple-300 shadow-sm"
-  >
-    <option value="">View Report</option>
-    {appt.reports.map((link, i) => (
-      <option key={i} value={link}>
-        Report {i + 1}
-      </option>
-    ))}
-  </select>
-) : (
-  <p className="text-gray-500">No reports</p>
-)}
-
+                          {Array.isArray(appt.reports) &&
+                          appt.reports.length > 0 ? (
+                            <select
+                              onChange={(e) => {
+                                const link = e.target.value;
+                                if (link) {
+                                  window.open(link, "_blank"); // Opens the report in a new tab
+                                  e.target.value = ""; // Reset select to default after opening
+                                }
+                              }}
+                              className="px-3 py-1 text-gray-700 border border-purple-300 shadow-sm"
+                            >
+                              <option value="">View Report</option>
+                              {appt.reports.map((link, i) => (
+                                <option key={i} value={link}>
+                                  Report {i + 1}
+                                </option>
+                              ))}
+                            </select>
+                          ) : (
+                            <p className="text-gray-500">No reports</p>
+                          )}
                         </td>
                         <td className="py-3 px-6">
-                          {appt. appointmentStatus=== "confirm" ? (
+                          {appt.appointmentStatus === "confirm" ? (
                             <button
                               onClick={() => router.push(appt.meetinglink)}
                               className="px-3 py-1 bg-blue-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition"
@@ -303,96 +301,68 @@ const fileInputRef = useRef(null);
                             </button>
                           )}
                         </td>
-                        {/* <td className="py-3 px-6">
-                          <input
-                            type="file"
-                            accept="image/*,application/pdf"
-                            onChange={async (e) => {
-                              const file = e.target.files?.[0];
-                              if (!file) return;
-                              setLoading(true);
-                              try {
-                                const url = await uploadToCloudinary(file);
-                                setDoctorRep(url);
-                                const res = await fetch("/api/doctorpres", {
-                                  method: "POST",
-                                  headers: {
-                                    "Content-Type": "application/json",
-                                  },
-                                  body: JSON.stringify({
-                                    id: appt._id,
-                                    prescription: url,
-                                  }),
-                                });
-                                if (!res.ok)
-                                  throw new Error("Failed to save report");
-                                alert("Report submitted successfully!");
-                              } catch (err) {
-                                console.error(err);
-                                alert("Error uploading report");
-                              } finally {
-                                setLoading(false);
-                              }
+
+                        <td className="py-3 px-6">
+                          <div className="flex items-center justify-center mt-2">
+                            {/* Hidden file input */}
+                            <input
+                              type="file"
+                              accept="image/*,application/pdf"
+                              ref={(el) => (appt.fileInputRef = el)} // store ref per row
+                              onChange={async (e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                setLoading(true);
+                                try {
+                                  const url = await uploadToCloudinary(file);
+                                  setDoctorRep(url);
+
+                                  const res = await fetch("/api/doctorpres", {
+                                    method: "POST",
+                                    headers: {
+                                      "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({
+                                      id: appt._id,
+                                      prescription: url,
+                                    }),
+                                  });
+
+                                  if (!res.ok)
+                                    throw new Error("Failed to save report");
+                                  alert("Report submitted successfully!");
+                                } catch (err) {
+                                  console.error(err);
+                                  alert("Error uploading report");
+                                } finally {
+                                  setLoading(false);
+                                }
+                              }}
+                              className="hidden"
+                            />
+
+                            {/* Clickable + icon */}
+                            <button
+                              onClick={() => appt.fileInputRef?.click()}
+                              className="text-purple-600 hover:text-purple-800 bg-purple-100 hover:bg-purple-200 rounded-full p-2 flex items-center justify-center shadow-md transition"
+                            >
+                              <AiOutlinePlus size={24} />
+                            </button>
+                          </div>
+                        </td>
+                        <td className="py-3 px-6">
+                          <button
+                            className=" text-white  transition flex items-center justify-center"
+                            onClick={() => {
+                              const id = appt?._id;
+                              router.push(`/prescription/${id}`);
                             }}
-                            className="mt-2 w-full text-sm"
-                          />
-                        </td> */}
-                        <td className="py-3 px-6">
-  <div className="flex items-center justify-center mt-2">
-    {/* Hidden file input */}
-    <input
-      type="file"
-      accept="image/*,application/pdf"
-      ref={(el) => (appt.fileInputRef = el)} // store ref per row
-      onChange={async (e) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        setLoading(true);
-        try {
-          const url = await uploadToCloudinary(file);
-          setDoctorRep(url);
-
-          const res = await fetch("/api/doctorpres", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id: appt._id, prescription: url }),
-          });
-
-          if (!res.ok) throw new Error("Failed to save report");
-          alert("Report submitted successfully!");
-        } catch (err) {
-          console.error(err);
-          alert("Error uploading report");
-        } finally {
-          setLoading(false);
-        }
-      }}
-      className="hidden"
-    />
-
-    {/* Clickable + icon */}
-    <button
-      onClick={() => appt.fileInputRef?.click()}
-      className="text-purple-600 hover:text-purple-800 bg-purple-100 hover:bg-purple-200 rounded-full p-2 flex items-center justify-center shadow-md transition"
-    >
-      <AiOutlinePlus size={24} />
-    </button>
-  </div>
-</td>
-                        <td className="py-3 px-6">
-                      
-                      
-
-<button
-  className=" text-white  transition flex items-center justify-center"
-  onClick={() => {
-    const id = appt?._id;
-    router.push(`/prescription/${id}`);
-  }}
->
-  <FaPencilAlt  className="text-black hover:text-black-400" size={18} />
-</button>
-
+                          >
+                            <FaPencilAlt
+                              className="text-black hover:text-black-400"
+                              size={18}
+                            />
+                          </button>
                         </td>
                       </tr>
                     ))}
