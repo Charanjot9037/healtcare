@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import { useRouter, useParams } from "next/navigation";
-import { useState,useEffect } from "react";
+import Navbar from "../components/navbar";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 const appointments = [
   {
@@ -54,7 +55,7 @@ const appointments = [
 const Page = () => {
   const router = useRouter();
   const { id } = useParams();
-   const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -67,7 +68,7 @@ const Page = () => {
     }
   }, []);
 
-  const [app,setApp]=useState(null)
+  const [app, setApp] = useState(null);
   useEffect(() => {
     const fetchAppointment = async () => {
       if (!user?.id) return;
@@ -82,39 +83,38 @@ const Page = () => {
         if (!res.ok) throw new Error("Failed to fetch appointments");
         const data = await res.json();
         setApp(data.appointments || []);
-      
       } catch (err) {
         console.error("Error fetching appointments:", err);
-        
       }
     };
 
     fetchAppointment();
   }, [user]);
 
-
   console.log(app);
   return (
-    <div className="bg-gray-50 min-h-screen w-screen py-10 px-6">
-      <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-2xl p-10">
+    <div className="bg-gray-50  w-screen ">
+      <Navbar />
+      <div className="max-w-screen mx-auto bg-white shadow-lg rounded-2xl p-10">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          Hi <span className="text-purple-600">{id}</span>, here are your
-          appointments
+          All appointments
         </h2>
 
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
+          <table className="w-full  border-collapse ">
             <thead>
-              <tr className="bg-gray-100 text-left text-gray-700 text-sm">
+              <tr className="bg-purple-200 w-full text-left text-gray-700 text-sm">
                 <th className="py-3 px-5">ID</th>
                 <th className="py-3 px-5">Doctor Name</th>
                 <th className="py-3 px-5">Date</th>
                 <th className="py-3 px-5">Time</th>
                 <th className="py-3 px-5">Status</th>
                 <th className="py-3 px-5">Meeting</th>
+                   <th className="py-3 px-5">Prescription</th>
+                     <th className="py-3 px-5">Reports</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody >
               {app?.map((pat, index) => (
                 <tr
                   key={index}
@@ -123,18 +123,22 @@ const Page = () => {
                   } hover:bg-purple-50 transition`}
                 >
                   <td className="py-3 px-5 text-gray-800 font-medium">
-                    {index+1}
+                    {index + 1}
                   </td>
                   <td className="px-5 text-gray-700">{pat.doctorName}</td>
-                  <td className="px-5 text-gray-700">{pat.appointmentDate.split("T")[0]}</td>
+                  <td className="px-5 text-gray-700">
+                    {pat.appointmentDate.split("T")[0]}
+                  </td>
                   {/* <td className="px-5 text-gray-700">{pat.appointmentTime}</td> */}
-<td className="px-5 text-gray-700">
-  {new Date(`1970-01-01T${pat.appointmentTime}:00`).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  })}
-</td>
+                  <td className="px-5 text-gray-700">
+                    {new Date(
+                      `1970-01-01T${pat.appointmentTime}:00`
+                    ).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}
+                  </td>
 
                   {/* Status Badge */}
                   <td className="px-5">
@@ -156,9 +160,7 @@ const Page = () => {
                   <td className="px-5">
                     <Link
                       disabled={pat.appointmentStatus !== "confirm"}
-                      href={
-pat?.meetinglink
-}
+                      href={pat?.meetinglink}
                       className={`px-4 py-1.5 rounded-lg text-sm font-medium shadow-md transition
                         ${
                           pat.appointmentStatus === "confirm"
@@ -168,6 +170,43 @@ pat?.meetinglink
                     >
                       Join
                     </Link>
+                  </td>
+                  <td>
+                    <div className="flex flex-col space-y-2">
+                      {pat?.doctorreports ? (
+                        <a
+                          href={pat.doctorreports}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 px-2 py-1 rounded-lg border-1 w-1/2 text-center decoration-none "
+                        >
+                          View Report
+                        </a>
+                      ) : (
+                        <p className="text-gray-500">No Prescription available</p>
+                      )}
+                    </div>
+                  </td>
+                  <td>
+                    <select
+                            onChange={(e) => {
+                              const link = e.target.value;
+                              if (link) window.open(link, "_blank"); // Opens the image in a new tab
+                            }}
+                            className="px-3 py-1 text-gray-700 border border-purple-300 shadow-sm"
+                          >
+                            <option value="">View Report</option>
+                            {Array.isArray(pat.reports) &&
+                            pat.reports.length > 0 ? (
+                              pat.reports.map((link, i) => (
+                                <option key={i} value={link}>
+                                  Report {i + 1}
+                                </option>
+                              ))
+                            ) : (
+                              <option value="">No reports</option>
+                            )}
+                          </select>
                   </td>
                 </tr>
               ))}

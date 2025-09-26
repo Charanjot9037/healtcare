@@ -37,10 +37,10 @@ const Navbar = () => {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-8 text-base font-medium">
           <Link
-            href="/homepage"
+            href="/"
             className="hover:text-yellow-300 transition-colors duration-200"
           >
-            Home
+            HOME
           </Link>
             <Link
             href="/task"
@@ -49,7 +49,7 @@ const Navbar = () => {
             DAILY TASK
           </Link>
           <Link
-            href="/userappnt/jot"
+            href="/userappnt"
             className="hover:text-yellow-300 transition-colors duration-200"
           >
             Appointments
