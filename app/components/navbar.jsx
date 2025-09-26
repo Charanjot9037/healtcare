@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 const Navbar = () => {
   const router = useRouter();
@@ -24,18 +25,20 @@ const Navbar = () => {
   };
 
   return (
-    <header className="bg-gradient-to-r from-purple-700 to-purple-900 text-white shadow-md">
-      <div className="container mx-auto flex justify-between items-center px-6 py-4">
+    <header className="bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md">
+      <div className="container mx-auto flex justify-between items-center ">
         {/* Logo */}
-        <h1
-          onClick={() => router.push("/homepage")}
-          className="text-2xl font-bold tracking-wide cursor-pointer"
-        >
-          Heal <span className="text-yellow-300">Well</span>
-        </h1>
-
+       <div className="flex items-center ml-2 cursor-pointer" onClick={() => router.push("/homepage")}>
+  <Image
+    src="/images/logo.png"       
+    alt="HealWell Logo"
+    width={100}            
+    height={10}            
+    className="object-contain"
+  />
+</div>
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center space-x-8 text-base font-medium">
+        <nav className="hidden md:flex items-center mr-10 space-x-8 text-base font-medium">
           <Link
             href="/"
             className="hover:text-yellow-300 transition-colors duration-200"
