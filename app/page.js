@@ -284,11 +284,19 @@ export default function HomePage() {
                         className="p-2 border rounded-lg shadow-sm"
                       >
                         <option value="">View Report</option>
-                        {pat.doctorreports.map((link, idx) => (
+                        {/* {pat?.doctorreports?.map((link, idx) => (
                           <option key={idx} value={link}>
                             Report {idx + 1}
                           </option>
-                        ))}
+                        ))} */}
+                        {Array.isArray(pat?.doctorreports) &&
+  pat.doctorreports.map((link, idx) => (
+    <option key={idx} value={link}>
+      Report {idx + 1}
+    </option>
+  ))
+}
+
                       </select>
                     )}
                   </div>

@@ -98,20 +98,20 @@ const Page = () => {
     <div className="bg-gray-50 min-h-screen w-screen py-10 px-6">
       <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-2xl p-10">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          Hi <span className="text-purple-600">{id}</span>, here are your
-          appointments
+          Hi <span className="text-purple-600"></span>, here are your
+          All reports
         </h2>
 
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-gray-100 text-left text-gray-700 text-sm">
+              <tr className="bg-purple-500  text-left text-white text-sm">
                 <th className="py-3 px-5">ID</th>
                 <th className="py-3 px-5">Doctor Name</th>
                 <th className="py-3 px-5">Date</th>
-                <th className="py-3 px-5">Time</th>
-                <th className="py-3 px-5">Status</th>
-                <th className="py-3 px-5">Meeting</th>
+                <th className="py-3 px-5">Submitted Reports</th>
+              <th className="py-3 px-5">Prescriptions</th>
+             
               </tr>
             </thead>
             <tbody>
@@ -127,48 +127,42 @@ const Page = () => {
                   </td>
                   <td className="px-5 text-gray-700">{pat.doctorName}</td>
                   <td className="px-5 text-gray-700">{pat.appointmentDate.split("T")[0]}</td>
-                  {/* <td className="px-5 text-gray-700">{pat.appointmentTime}</td> */}
-<td className="px-5 text-gray-700">
-  {new Date(`1970-01-01T${pat.appointmentTime}:00`).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  })}
-</td>
+                  <td className="px-5 text-gray-700">
+  {Array.isArray(pat?.doctorreports) && pat.doctorreports.length > 0 ? (
+  <select className="border rounded px-2 py-1">
+    <option value="">View Report</option>
+    {pat.doctorreports.map((link, idx) => (
+      <option key={idx} value={link}>
+        Report {idx + 1}
+      </option>
+    ))}
+  </select>
+) : (
+  <p className="text-gray-500">No Submitted report</p>
+)}
+
+                    </td>
+
+
 
                   {/* Status Badge */}
                   <td className="px-5">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold
-                        ${
-                          pat.appointmentStatus === "confirm"
-                            ? "bg-green-100 text-green-700"
-                            : pat.status === "Cancelled"
-                            ? "bg-red-100 text-red-600"
-                            : "bg-yellow-100 text-yellow-600"
-                        }`}
-                    >
-                      {pat?.appointmentStatus}
-                    </span>
+                 {Array.isArray(pat?.doctorreports) && pat.doctorreports.length > 0 ? (
+  <select className="border rounded px-2 py-1">
+    <option value="">View Report</option>
+    {pat.reports.map((link, idx) => (
+      <option key={idx} value={link}>
+        Report {idx + 1}
+      </option>
+    ))}
+  </select>
+) : (
+  <p className="text-gray-500">No prescriptions</p>
+)}
                   </td>
 
                   {/* Join Button */}
-                  <td className="px-5">
-                    <Link
-                      disabled={pat.appointmentStatus !== "confirm"}
-                      href={
-pat?.meetinglink
-}
-                      className={`px-4 py-1.5 rounded-lg text-sm font-medium shadow-md transition
-                        ${
-                          pat.appointmentStatus === "confirm"
-                            ? "bg-purple-600 text-white hover:bg-purple-700"
-                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        }`}
-                    >
-                      Join
-                    </Link>
-                  </td>
+                 
                 </tr>
               ))}
             </tbody>

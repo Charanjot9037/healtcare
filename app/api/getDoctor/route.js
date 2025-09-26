@@ -1,8 +1,11 @@
+
 import Doctor from "@/app/lib/models/Doctor";
 import dbConnect from "@/app/lib/config/db";
-import Appointment from "@/app/lib/models/appointment";
+import Appointment from "@/app/lib/models/appointment"
 import User from "@/app/lib/models/User";
 export async function POST(req) {
+
+
   try {
     await dbConnect();
 
@@ -14,20 +17,19 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-    const user = await User.findById(userId);
+const user = await User.findById(userId);
+ 
 
-    const doc_id = user.doc_id;
+const doc_id=user.doc_id;
 
-    const doctor = await Doctor.findOne({ doc_id });
+const doctor = await Doctor.findOne({doc_id});
 
-    const appointments = await Appointment.find({ doctorId: doctor._id });
-
-    return Response.json({ success: true, appointments }, { status: 200 });
+ 
+console.log("doctor",doctor);
+    return Response.json({ success: true ,doctor}, { status: 200 });
   } catch (error) {
     console.error("Error fetching appointments:", error);
-    return Response.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    );
+    return Response.json({ success: false, error: error.message }, { status: 500 });
   }
 }
+
