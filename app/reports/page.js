@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import { useRouter, useParams } from "next/navigation";
-
+import { useState,useEffect } from "react";
+import Link from "next/link";
 const appointments = [
   {
     appointmentId: "A1001",
@@ -53,73 +54,115 @@ const appointments = [
 const Page = () => {
   const router = useRouter();
   const { id } = useParams();
+   const [user, setUser] = useState(null);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+      } catch (err) {
+        console.error("Error parsing user from localStorage:", err);
+      }
+    }
+  }, []);
 
+  const [app,setApp]=useState(null)
+  useEffect(() => {
+    const fetchAppointment = async () => {
+      if (!user?.id) return;
+
+      try {
+        const res = await fetch("/api/userappointment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user.id }),
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch appointments");
+        const data = await res.json();
+        setApp(data.appointments || []);
+      
+      } catch (err) {
+        console.error("Error fetching appointments:", err);
+        
+      }
+    };
+
+    fetchAppointment();
+  }, [user]);
+
+
+  console.log(app);
   return (
     <div className="bg-gray-50 min-h-screen w-screen py-10 px-6">
       <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-2xl p-10">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          Hi <span className="text-purple-600">{id}</span>, here are your
-          appointments
+          Hi <span className="text-purple-600"></span>, here are your
+          All reports
         </h2>
 
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-gray-100 text-left text-gray-700 text-sm">
+              <tr className="bg-purple-500  text-left text-white text-sm">
                 <th className="py-3 px-5">ID</th>
                 <th className="py-3 px-5">Doctor Name</th>
                 <th className="py-3 px-5">Date</th>
-                <th className="py-3 px-5">Time</th>
-                <th className="py-3 px-5">Status</th>
-                <th className="py-3 px-5">Meeting</th>
+                <th className="py-3 px-5">Submitted Reports</th>
+              <th className="py-3 px-5">Prescriptions</th>
+             
               </tr>
             </thead>
             <tbody>
-              {appointments.map((pat, index) => (
+              {app?.map((pat, index) => (
                 <tr
-                  key={pat.appointmentId}
+                  key={index}
                   className={`${
                     index % 2 === 0 ? "bg-gray-50" : "bg-white"
                   } hover:bg-purple-50 transition`}
                 >
                   <td className="py-3 px-5 text-gray-800 font-medium">
-                    {pat.appointmentId}
+                    {index+1}
                   </td>
                   <td className="px-5 text-gray-700">{pat.doctorName}</td>
-                  <td className="px-5 text-gray-700">{pat.date}</td>
-                  <td className="px-5 text-gray-700">{pat.startTime}</td>
+                  <td className="px-5 text-gray-700">{pat.appointmentDate.split("T")[0]}</td>
+                  <td className="px-5 text-gray-700">
+  {Array.isArray(pat?.doctorreports) && pat.doctorreports.length > 0 ? (
+  <select className="border rounded px-2 py-1">
+    <option value="">View Report</option>
+    {pat.doctorreports.map((link, idx) => (
+      <option key={idx} value={link}>
+        Report {idx + 1}
+      </option>
+    ))}
+  </select>
+) : (
+  <p className="text-gray-500">No Submitted report</p>
+)}
+
+                    </td>
+
+
 
                   {/* Status Badge */}
                   <td className="px-5">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold
-                        ${
-                          pat.status === "Confirmed"
-                            ? "bg-green-100 text-green-700"
-                            : pat.status === "Cancelled"
-                            ? "bg-red-100 text-red-600"
-                            : "bg-yellow-100 text-yellow-600"
-                        }`}
-                    >
-                      {pat.status}
-                    </span>
+                 {Array.isArray(pat?.doctorreports) && pat.doctorreports.length > 0 ? (
+  <select className="border rounded px-2 py-1">
+    <option value="">View Report</option>
+    {pat.reports.map((link, idx) => (
+      <option key={idx} value={link}>
+        Report {idx + 1}
+      </option>
+    ))}
+  </select>
+) : (
+  <p className="text-gray-500">No prescriptions</p>
+)}
                   </td>
 
                   {/* Join Button */}
-                  <td className="px-5">
-                    <button
-                      disabled={pat.status !== "Confirmed"}
-                      onClick={() => router.push("/meeting")}
-                      className={`px-4 py-1.5 rounded-lg text-sm font-medium shadow-md transition
-                        ${
-                          pat.status === "Confirmed"
-                            ? "bg-purple-600 text-white hover:bg-purple-700"
-                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        }`}
-                    >
-                      Join
-                    </button>
-                  </td>
+                 
                 </tr>
               ))}
             </tbody>

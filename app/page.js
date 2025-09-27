@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 import Navbar from "./components/navbar";
+import DoctorsIntroSection from "./components/landingpage";
+import Footer from "./components/footer";
 
 export default function HomePage() {
   const handleReportClick = (e) => {
@@ -78,7 +80,7 @@ export default function HomePage() {
       status: "Confirmed",
       office: "Sharma Clinic, Mumbai",
       date: "31-09-2025",
-      doctorreports: [], // ensure dummy has doctorreports
+      doctorreports: [],
     },
     {
       appointmentId: "A1002",
@@ -137,6 +139,8 @@ export default function HomePage() {
     fetchAppointment();
   }, [user]);
 
+  console.log(app);
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
@@ -178,52 +182,83 @@ export default function HomePage() {
           ></dotlottie-wc>
         </div>
       </section>
+{/* Doctors Section */}
+<section className="container mx-auto px-6 py-12 relative">
+  <h3 className="text-6xl text-purple-700 font-extrabold mb-6 text-center">
+    ~Our Doctors~
+  </h3>
+  <DoctorsIntroSection/>
 
-      {/* Doctors Section */}
-      <section className="container mx-auto px-6 py-12">
-        <h3 className="text-2xl text-purple-700 font-semibold mb-6 text-center">
-          Our Doctors
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {doctors.length === 0 ? (
-            <p className="text-center text-gray-500 col-span-3">
-              No doctors available.
-            </p>
-          ) : (
-            doctors.map((doc) => (
-              <div
-                key={doc._id}
-                className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center border border-gray-100"
-              >
-                <Image
-                  src={doc.imageUrl}
-                  alt={doc.name}
-                  width={400}
-                  height={400}
-                  className="w-full h-[300px] object-cover rounded-xl"
-                />
-                <h4 className="text-lg font-bold text-gray-800 mt-3">{doc.name}</h4>
-                <p className="text-gray-600 mb-2">{doc.specialization}</p>
-                <p className="text-gray-500 mb-4">Fees: ₹{doc.fees}</p>
-                <Link
-                  href={{
-                    pathname: "/appointment",
-                    query: {
-                      name: doc.name,
-                      specialization: doc.specialization,
-                      imageUrl: doc.imageUrl,
-                      id: doc._id,
-                    },
-                  }}
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow text-sm"
-                >
-                  Book Appointment
-                </Link>
-              </div>
-            ))
-          )}
+  {/* Left Arrow */}
+  {/* <button
+    onClick={() => {
+      const carousel = document.getElementById("doctor-carousel");
+      const cardWidth = carousel.firstChild.offsetWidth + 24; // gap-6
+      carousel.scrollBy({ left: -cardWidth, behavior: "smooth" });
+    }}
+    className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-purple-600 text-white p-2 rounded-full shadow z-10 hover:bg-purple-700 transition"
+  >
+    &#8592;
+  </button> */}
+
+  {/* Right Arrow */}
+  {/* <button
+    onClick={() => {
+      const carousel = document.getElementById("doctor-carousel");
+      const cardWidth = carousel.firstChild.offsetWidth + 24;
+      carousel.scrollBy({ left: cardWidth, behavior: "smooth" });
+    }}
+    className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-purple-600 text-white p-2 rounded-full shadow z-10 hover:bg-purple-700 transition"
+  >
+    &#8594;
+  </button> */}
+
+  {/* Carousel */}
+  <div
+    id="doctor-carousel"
+    className="flex gap-4 mr-20 ml-20 overflow-x-auto scroll-smooth px-2 hide-scrollbar"
+  >
+    {doctors.length === 0 ? (
+      <p className="text-center text-gray-500 col-span-3">
+        No doctors available.
+      </p>
+    ) : (
+      doctors.map((doc) => (
+        <div
+          key={doc._id}
+          className="flex-shrink-0 w-[calc((100%/4)-12px)] bg-white p-4 rounded-lg shadow hover:shadow-md flex flex-col items-center border border-gray-100 transition"
+        >
+          <Image
+            src={doc.imageUrl}
+            alt={doc.name}
+            width={280}
+            height={250} 
+            className="w-full h-[250px] object-cover object-top rounded-t-lg transition-transform duration-300 hover:scale-105"
+          />
+          <h4 className="text-lg font-bold text-gray-800 mt-3">{doc.name}</h4>
+          <p className="text-gray-600 mb-1">{doc.specialization}</p>
+          <p className="text-gray-500 mb-3 text-sm">Fees: ₹{doc.fees}</p>
+          <Link
+            href={{
+              pathname: "/appointment",
+              query: {
+                name: doc.name,
+                specialization: doc.specialization,
+                imageUrl: doc.imageUrl,
+                id: doc._id,
+              },
+            }}
+            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow text-sm transition"
+          >
+            Book Appointment
+          </Link>
         </div>
-      </section>
+      ))
+    )}
+  </div>
+</section>
+
+
 
       {/* Appointment Table */}
       <div className="bg-white shadow rounded-xl p-4 container mx-auto mb-10 overflow-x-auto">
@@ -243,7 +278,7 @@ export default function HomePage() {
             </tr>
           </thead>
           <tbody>
-            {app?.map((pat, index) => (
+            {app.map((pat, index) => (
               <tr key={index} className="text-black">
                 <td className="py-2">{index + 1}</td>
                 <td>{pat.doctorName}</td>
@@ -264,7 +299,7 @@ export default function HomePage() {
                 </td>
                 <td>
                   <button
-                    onClick={() => router.push(`${pat?.meetinglink}`)}
+                    onClick={() => router.push(`${pat.meetinglink}`)}
                     className={`bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded-lg text-xs shadow transition ${
                       pat.appointmentStatus !== "confirm"
                         ? "opacity-50 cursor-not-allowed"
@@ -276,20 +311,17 @@ export default function HomePage() {
                 </td>
                 <td>
                   <div className="flex flex-col space-y-2">
-                    {(!pat?.doctorreports || pat.doctorreports.length === 0) ? (
-                      <p className="text-gray-500">No reports</p>
-                    ) : (
-                      <select
-                        onChange={handleReportClick}
-                        className="p-2 border rounded-lg shadow-sm"
+                    {pat?.doctorreports ? (
+                      <a
+                        href={pat.doctorreports}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
                       >
-                        {/* <option value="">View Report</option>
-                        {pat?.doctorreports?.map((link, idx) => (
-                          <option key={idx} value={link}>
-                            Report {idx + 1}
-                          </option>
-                        ))} */}
-                      </select>
+                        View Report
+                      </a>
+                    ) : (
+                      <p className="text-gray-500">No report available</p>
                     )}
                   </div>
                 </td>
@@ -299,10 +331,7 @@ export default function HomePage() {
         </table>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-purple-700 text-white text-center py-4 mt-10">
-        <p>© 2025 Drug Management System | All Rights Reserved</p>
-      </footer>
+      <Footer/>
 
       {/* ✅ Lottie Script */}
       <Script

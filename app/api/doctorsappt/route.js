@@ -1,15 +1,14 @@
-
 import Doctor from "@/app/lib/models/Doctor";
 import dbConnect from "@/app/lib/config/db";
-import Appointment from "@/app/lib/models/appointment"
+import Appointment from "@/app/lib/models/appointment";
 import User from "@/app/lib/models/User";
+
 export async function POST(req) {
-
-
   try {
     await dbConnect();
 
-    const { userId } = await req.json(); // frontend sends user.id
+    // Get userId from frontend
+    const { userId } = await req.json();
 
     if (!userId) {
       return Response.json(
@@ -17,19 +16,46 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-const user = await User.findById(userId);
-    // console.log("Looking for appointments with userID:", user.doc_id);
 
-const doc_id=user.doc_id;
-// console.log(doc_id);
-const doctor = await Doctor.findOne({doc_id});
+    // Find the user
+    const user = await User.findById(userId);
+    if (!user) {
+      return Response.json(
+        { success: false, error: "User not found" },
+        { status: 404 }
+      );
+    }
 
-    const appointments = await Appointment.find({ doctorId:doctor._id });
-console.log("appoint",appointments);
-    return Response.json({ success: true ,appointments }, { status: 200 });
+    // Get the doctor ID from user
+    const doc_id = user.doc_id;
+    if (!doc_id) {
+      return Response.json(
+        { success: false, error: "User has no associated doctor" },
+        { status: 400 }
+      );
+    }
+
+    // Find the doctor
+    const doctor = await Doctor.findOne({ doc_id });
+    if (!doctor) {
+      return Response.json(
+        { success: false, error: "Doctor not found" },
+        { status: 404 }
+      );
+    }
+
+    // Fetch appointments
+    const appointments = await Appointment.find({ doctorId: doctor._id });
+
+    return Response.json(
+      { success: true, appointments },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error fetching appointments:", error);
-    return Response.json({ success: false, error: error.message }, { status: 500 });
+    return Response.json(
+      { success: false, error: error.message },
+      { status: 500 }
+    );
   }
 }
-
