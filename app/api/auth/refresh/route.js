@@ -1,60 +1,46 @@
-import jwt from "jsonwebtoken";
-import cookie from "cookie";
 import dbConnect from "../../../lib/config/db";
 import User from "../../../lib/models/User";
-import { createAccessToken, createRefreshToken } from "../../../lib/helper/auth";
+import cookie from "cookie";
+import {
+  createAccessToken,
+  verifyRefreshToken,
+} from "../../../lib/helper/auth";
 
 export async function POST(req) {
   try {
     await dbConnect();
 
-    // Parse cookies
+    // 🍪 Read refresh token from cookies
     const cookies = cookie.parse(req.headers.get("cookie") || "");
-    const token = cookies.refreshToken;
+    const refreshToken = cookies.refreshToken;
 
-    if (!token) {
-      return new Response(JSON.stringify({ message: "No refresh token provided" }), {
-        status: 401,
-        headers: { "Content-Type": "application/json" },
-      });
+    if (!refreshToken) {
+      return new Response(
+        JSON.stringify({ message: "No refresh token provided" }),
+        { status: 401, headers: { "Content-Type": "application/json" } }
+      );
     }
 
-    // Verify refresh token
-    let payload;
-    try {
-      payload = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
-    } catch (err) {
-      return new Response(JSON.stringify({ message: "Invalid refresh token" }), {
-        status: 403,
-        headers: { "Content-Type": "application/json" },
-      });
+    // ✅ Verify refresh token
+    const decoded = verifyRefreshToken(refreshToken);
+    if (!decoded || !decoded.id) {
+      return new Response(
+        JSON.stringify({ message: "Invalid or expired refresh token" }),
+        { status: 403, headers: { "Content-Type": "application/json" } }
+      );
     }
 
-    // Find user
-    const user = await User.findById(payload.id);
-    if (!user || user.refreshToken !== token) {
-      return new Response(JSON.stringify({ message: "Refresh token not recognized" }), {
-        status: 403,
-        headers: { "Content-Type": "application/json" },
-      });
+    // 🔎 Find user
+    const user = await User.findById(decoded.id);
+    if (!user || user.refreshToken !== refreshToken) {
+      return new Response(
+        JSON.stringify({ message: "Invalid refresh token" }),
+        { status: 403, headers: { "Content-Type": "application/json" } }
+      );
     }
 
-    // Create new tokens
+    // 🔑 Issue new access token
     const newAccessToken = createAccessToken(user);
-    const newRefreshToken = createRefreshToken(user);
-
-    // Save new refresh token
-    user.refreshToken = newRefreshToken;
-    await user.save();
-
-    // Update cookie
-    const setCookie = cookie.serialize("refreshToken", newRefreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-    });
 
     return new Response(
       JSON.stringify({
@@ -63,14 +49,11 @@ export async function POST(req) {
       }),
       {
         status: 200,
-        headers: {
-          "Content-Type": "application/json",
-          "Set-Cookie": setCookie,
-        },
+        headers: { "Content-Type": "application/json" },
       }
     );
   } catch (err) {
-    console.error("Refresh error:", err);
+    console.error("Refresh token error:", err);
     return new Response(JSON.stringify({ message: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

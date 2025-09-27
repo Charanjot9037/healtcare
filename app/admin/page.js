@@ -1,11 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
 const Dashboard = () => {
   const [patients, setPatients] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [appoint, setAppoint] = useState([]);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -46,6 +54,13 @@ const Dashboard = () => {
     fetchAppointments();
   }, []);
 
+    const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
+    setUser(null);
+    router.push("/login");
+  };
+
   return (
     <div className="min-h-screen flex text-gray-800 bg-gray-100">
       {/* Sidebar */}
@@ -64,6 +79,26 @@ const Dashboard = () => {
           <Link href="/paitents" className="block hover:bg-purple-700 p-3 rounded transition">
             Patient
           </Link>
+           {user ? (
+            <div className="flex items-center space-x-4">
+              <span className="font-medium text-yellow-200">
+                Hello, {user.name}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="bg-gray-200 text-purple-900 font-medium px-4 py-2 rounded-lg shadow-sm hover:bg-gray-300 transition duration-200"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="bg-yellow-400 text-purple-900 font-medium px-4 py-2 rounded-lg hover:bg-yellow-300 transition duration-200 shadow-sm"
+            >
+              Login
+            </Link>
+          )}
         </nav>
       </aside>
 

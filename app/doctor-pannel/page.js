@@ -15,9 +15,14 @@ export default function DoctorLandingPage() {
   const [filter, setFilter] = useState("All");
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  
-  const router = useRouter();
 
+  const router = useRouter();
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
   // Fetch logged-in doctor
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -83,6 +88,12 @@ export default function DoctorLandingPage() {
     const link = e.target.value;
     if (link) window.open(link, "_blank");
   };
+    const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
+    setUser(null);
+    router.push("/login");
+  };
 
   const filteredAppointments = app.filter((appt) => {
     const matchesSearch =
@@ -95,6 +106,27 @@ export default function DoctorLandingPage() {
 
   return (
     <div className="min-h-screen  bg-gradient-to-br from-white via-purple-100 to-purple-200 flex flex-col items-center justify-start p-6 md:p-1">
+       {user ? (
+            <div className="flex items-center space-x-4">
+              <span className="font-medium text-yellow-200">
+                Hello, {user.name}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="bg-gray-200 text-purple-900 font-medium px-4 py-2 rounded-lg shadow-sm hover:bg-gray-300 transition duration-200"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="bg-yellow-400 text-purple-900 font-medium px-4 py-2 rounded-lg hover:bg-yellow-300 transition duration-200 shadow-sm"
+            >
+              Login
+            </Link>
+          )}
+
       {/* Header */}
       {!showModal && (
         <div className=" w-full  bg-white backdrop-blur-xl shadow-2xl  p-8 md:p-12 border border-purple-200 transition-all duration-500">
@@ -175,7 +207,7 @@ export default function DoctorLandingPage() {
                         )}
                       </td>
                       <td className="py-3 px-6">
-                        {appt.status === "Confirmed" ? (
+                        {appt.appointmentStatus === "confirm" ? (
                           <button
                             onClick={() => router.push(appt.meetinglink)}
                             className="px-3 py-1 bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition"
