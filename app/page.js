@@ -7,6 +7,7 @@ import Script from "next/script";
 import Navbar from "./components/navbar";
 import DoctorsIntroSection from "./components/landingpage";
 import Footer from "./components/footer";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export default function HomePage() {
   const handleReportClick = (e) => {
@@ -183,7 +184,7 @@ export default function HomePage() {
         </div>
       </section>
 {/* Doctors Section */}
-<section className=" mx-auto relative px-5">
+<section className=" mx-auto relative px-5 lg:mr-10">
   {/* <h3 className="text-4xl  text-purple-600 font-extrabold mb-6 text-center">
     ~Our Doctors~
   </h3> */}
@@ -292,13 +293,13 @@ export default function HomePage() {
                   </button>
                 </td>
                 <td>
-                  <div className="flex flex-col space-y-2">
+                  <div className="space-y-2">
                     {pat?.doctorreports ? (
                       <a
                         href={pat.doctorreports}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
+                        className=" decoration-none bg-white-500 text-purple-500 hover:bg-purple-600 hover:text-white px-3 py-1 rounded-lg text-xs shadow transition "
                       >
                         View Report
                       </a>
@@ -312,6 +313,46 @@ export default function HomePage() {
           </tbody>
         </table>
       </div>
+      {/* Chatbot button */}
+    {/* <div className="fixed bottom-6 right-6 z-50">
+      <button
+        onClick={() => router.push("/healthcareAI")}
+        className="bg-purple-600 hover:bg-purple-700 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg focus:outline-none"
+        aria-label="Open chatbot page"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-7 w-7 "
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M7 8h10M7 12h6m-3 8a9 9 0 110-18 9 9 0 010 18z"
+          />
+        </svg>
+      </button>
+    </div> */}
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-2 shadow-xl rounded-full ">
+      <button
+        onClick={() => router.push("/healthcareAI")}
+        className=" text-white rounded-full bg-purple-100 flex items-center justify-center shadow-lg focus:outline-none"
+        aria-label="Open chatbot page"
+      >
+        <DotLottieReact
+          src="https://lottie.host/a445e043-19c2-493f-9605-b1f3a39a2a67/M202M0jD42.lottie"
+          loop
+          autoplay
+          style={{ width: "200px", height:"200px" }}
+        />
+      </button>
+     
+    </div>
+  
+
 
       <Footer/>
 

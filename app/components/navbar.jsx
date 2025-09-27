@@ -95,21 +95,21 @@ const Navbar = () => {
       {menuOpen && (
         <div className="md:hidden bg-purple-800 px-6 py-4 space-y-4">
           <Link
-            href="/homepage"
+            href="/"
             onClick={() => setMenuOpen(false)}
             className="block hover:text-yellow-300"
           >
             Home
           </Link>
           <Link
-            href="/userappnt/jot"
+            href="/userappnt"
             onClick={() => setMenuOpen(false)}
             className="block hover:text-yellow-300"
           >
             Appointments
           </Link>
           <Link
-            href="#"
+            href="/userreport"
             onClick={() => setMenuOpen(false)}
             className="block hover:text-yellow-300"
           >

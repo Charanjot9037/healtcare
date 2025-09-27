@@ -23,11 +23,11 @@ export default function Footer() {
 
         {/* Footer Links */}
         <div className="flex flex-wrap justify-center gap-8 text-sm md:text-base">
-          <a href="#" className="hover:text-gray-400 transition">HOME</a>
-          <a href="#" className="hover:text-gray-400 transition">DAILY TASK</a>
-          <a href="#" className="hover:text-gray-400 transition">APPOINTMENTS</a>
-          <a href="#" className="hover:text-gray-400 transition">REPORTS</a>
-          <a href="#" className="hover:text-gray-400 transition">LOGIN</a>
+          <a href="/" className="hover:text-gray-400 transition">HOME</a>
+          <a href="#" className="hover:text-gray-400 transition">VIEW PROGRESS</a>
+          <a href="/userappnt" className="hover:text-gray-400 transition">APPOINTMENTS</a>
+          <a href="/userreport" className="hover:text-gray-400 transition">DOCUMENTS</a>
+        
         </div>
 
         {/* Social Media Icons */}
