@@ -12,13 +12,13 @@ export default function Footer() {
         <div className="flex items-center gap-2">
           {/* Replace logo.png with your actual file path in /public folder */}
           <Image
-            src="/images/logo.png"
+            src="/images/logo2.png"
             alt="Heal Well Logo"
             width={100}
             height={100}
             className="object-contain"
           />
-          <span className="font-bold text-2xl">HEAL </span><span className="text-yellow-400 font-bold text-2xl">WELL</span>
+          <span className="font-bold text-2xl">HEAL </span><span className="text-yellow-200 font-bold text-2xl">WELL</span>
         </div>
 
         {/* Footer Links */}

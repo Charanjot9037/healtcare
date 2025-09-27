@@ -26,15 +26,15 @@ const Navbar = () => {
   };
 
   return (
-    <header className="bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md">
-      <div className="container mx-auto flex justify-between items-center ">
+    <header className="bg-gradient-to-r from-purple-700 to-purple-900 text-white shadow-md ">
+      <div className="container mx-auto flex justify-between  items-center py-1">
         {/* Logo */}
-       <div className="flex items-center ml-2 cursor-pointer" onClick={() => router.push("/homepage")}>
+       <div className="flex items-center  ml-2 cursor-pointer" onClick={() => router.push("/homepage")}>
   <Image
-    src="/images/logo.png"       
+    src="/images/logo2.png"       
     alt="HealWell Logo"
-    width={100}            
-    height={10}            
+    width={70}            
+    height={5}            
     className="object-contain"
   />
 </div>
@@ -46,12 +46,7 @@ const Navbar = () => {
           >
             HOME
           </Link>
-            <Link
-            href="/task"
-            className="hover:text-yellow-300 transition-colors duration-200"
-          >
-            DAILY TASK
-          </Link>
+       
           <Link
             href="/userappnt"
             className="hover:text-yellow-300 transition-colors duration-200"
@@ -68,7 +63,7 @@ const Navbar = () => {
           {user ? (
             <div className="flex items-center space-x-4">
               <span className="font-medium text-yellow-200">
-                Hi, {user.name}
+                Hi, {user.name.toUpperCase()}
               </span>
               <button
                 onClick={handleLogout}

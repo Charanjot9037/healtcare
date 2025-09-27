@@ -97,6 +97,13 @@ export default function DoctorLandingPage() {
     const link = e.target.value;
     if (link) window.open(link, "_blank");
   };
+     const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
+    setUser(null);
+    router.push("/login");
+  };
+
 
   const filteredAppointments = app.filter((appt) => {
     const matchesSearch =
@@ -149,6 +156,26 @@ export default function DoctorLandingPage() {
           >
             Appointment
           </button>
+                {doctorData ? (
+                      <div className="flex items-center space-x-4">
+                        <span className="font-medium text-yellow-200">
+                          Hi, {doctorData.name}
+                        </span>
+                        <button
+                          onClick={handleLogout}
+                          className="bg-gray-200 text-purple-900 font-medium px-4 py-2 rounded-lg shadow-sm hover:bg-gray-300 transition duration-200"
+                        >
+                          LOGOUT
+                        </button>
+                      </div>
+                    ) : (
+                      <Link
+                        href="/login"
+                        className="bg-white text-purple-900 font-medium px-4 py-2 rounded-lg hover:bg-gray-600 hover:text-white transition duration-200 shadow-sm"
+                      >
+                        Login
+                      </Link>
+                    )}
           {/* ✅ Lottie Animation */}
           <div className="mt-5">
             <DotLottieReact

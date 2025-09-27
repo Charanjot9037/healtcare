@@ -147,8 +147,8 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative w-full min-h-[600px] flex flex-col md:flex-row items-center justify-between bg-white text-gray-800 px-6 md:px-20 py-12 md:py-16">
-        <div className="flex-1 space-y-6 text-center md:text-left">
+      <section className="mt-2 relative w-full min-h-[600px] flex flex-col md:flex-row items-center justify-between bg-white text-gray-800 px-6 md:px-20 py-12 md:py-0">
+        <div className=" flex-1 space-y-6 text-center md:text-left">
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-transparent drop-shadow-sm">
             Towards a Healthy Future
             <br /> Drug-Free Society
@@ -162,13 +162,13 @@ export default function HomePage() {
               href="/about"
               className="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-500 text-white font-semibold rounded-full shadow hover:opacity-90 transition text-center"
             >
-              Learn More
+              View Progress
             </Link>
             <Link
               href="/ecommerce"
               className="px-6 py-3 border-2 border-purple-600 text-purple-600 rounded-full hover:bg-purple-600 hover:text-white transition text-center"
             >
-              Take Action
+              Daily Exercise
             </Link>
           </div>
         </div>
@@ -183,79 +183,61 @@ export default function HomePage() {
         </div>
       </section>
 {/* Doctors Section */}
-<section className="container mx-auto px-6 py-12 relative">
-  <h3 className="text-6xl text-purple-700 font-extrabold mb-6 text-center">
+<section className=" mx-auto relative px-5">
+  {/* <h3 className="text-4xl  text-purple-600 font-extrabold mb-6 text-center">
     ~Our Doctors~
-  </h3>
+  </h3> */}
   <DoctorsIntroSection/>
 
-  {/* Left Arrow */}
-  {/* <button
-    onClick={() => {
-      const carousel = document.getElementById("doctor-carousel");
-      const cardWidth = carousel.firstChild.offsetWidth + 24; // gap-6
-      carousel.scrollBy({ left: -cardWidth, behavior: "smooth" });
-    }}
-    className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-purple-600 text-white p-2 rounded-full shadow z-10 hover:bg-purple-700 transition"
-  >
-    &#8592;
-  </button> */}
 
-  {/* Right Arrow */}
-  {/* <button
-    onClick={() => {
-      const carousel = document.getElementById("doctor-carousel");
-      const cardWidth = carousel.firstChild.offsetWidth + 24;
-      carousel.scrollBy({ left: cardWidth, behavior: "smooth" });
-    }}
-    className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-purple-600 text-white p-2 rounded-full shadow z-10 hover:bg-purple-700 transition"
-  >
-    &#8594;
-  </button> */}
-
-  {/* Carousel */}
   <div
-    id="doctor-carousel"
-    className="flex gap-4 mr-20 ml-20 overflow-x-auto scroll-smooth px-2 hide-scrollbar"
-  >
-    {doctors.length === 0 ? (
-      <p className="text-center text-gray-500 col-span-3">
-        No doctors available.
-      </p>
-    ) : (
-      doctors.map((doc) => (
-        <div
-          key={doc._id}
-          className="flex-shrink-0 w-[calc((100%/4)-12px)] bg-white p-4 rounded-lg shadow hover:shadow-md flex flex-col items-center border border-gray-100 transition"
-        >
+  id="doctor-carousel"
+  className="flex gap-6 mx-20 overflow-x-auto scroll-smooth px-4 hide-scrollbar py-6"
+>
+  {doctors.length === 0 ? (
+    <p className="text-center text-gray-400 col-span-3 italic">
+      No doctors available.
+    </p>
+  ) : (
+    doctors.map((doc) => (
+      <div
+        key={doc._id}
+        className="flex-shrink-0 w-[calc((100%/3)-16px)] bg-white p-5 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 transition duration-300 flex flex-col items-center border border-gray-200"
+        style={{ animation: "fadeInUp 0.5s ease forwards" }}
+      >
+        <div>
+          
           <Image
-            src={doc.imageUrl}
-            alt={doc.name}
-            width={280}
-            height={250} 
-            className="w-full h-[250px] object-cover object-top rounded-t-lg transition-transform duration-300 hover:scale-105"
-          />
-          <h4 className="text-lg font-bold text-gray-800 mt-3">{doc.name}</h4>
-          <p className="text-gray-600 mb-1">{doc.specialization}</p>
-          <p className="text-gray-500 mb-3 text-sm">Fees: ₹{doc.fees}</p>
-          <Link
-            href={{
-              pathname: "/appointment",
-              query: {
-                name: doc.name,
-                specialization: doc.specialization,
-                imageUrl: doc.imageUrl,
-                id: doc._id,
-              },
-            }}
-            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow text-sm transition"
-          >
-            Book Appointment
-          </Link>
-        </div>
-      ))
-    )}
-  </div>
+          src={doc.imageUrl}
+          alt={doc.name}
+          width={280}
+          height={250}
+          className="w-full h-[250px] object-cover object-top rounded-xl transition-transform duration-500 hover:scale-110"
+        />
+          </div>
+        
+        <h4 className="text-xl font-semibold text-gray-900 mt-4">{doc.name}</h4>
+        <p className="text-purple-700 font-medium mb-1">{doc.specialization}</p>
+        <p className="text-gray-600 mb-4 text-sm">Fees: ₹{doc.fees}</p>
+        <Link
+          href={{
+            pathname: "/appointment",
+            query: {
+              name: doc.name,
+              specialization: doc.specialization,
+              imageUrl: doc.imageUrl,
+              id: doc._id,
+            },
+          }}
+          className="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-lg shadow-md text-sm font-semibold transition transform hover:scale-105 hover:animate-pulse"
+        >
+          Book Appointment
+        </Link>
+      </div>
+    ))
+  )}
+</div>
+
 </section>
 
 

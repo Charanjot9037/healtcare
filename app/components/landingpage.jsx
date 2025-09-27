@@ -5,7 +5,7 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 export default function DoctorsIntroSection() {
   return (
-    <section className="container mx-auto px-6 py-16 flex flex-col md:flex-row items-center gap-12">
+    <section className=" mx-auto px-4 lg:h-[400px] py-2 flex flex-col md:flex-row items-center gap-12">
       {/* Left Side - Lottie Animation */}
       <div className="md:w-1/2 mr-20 flex justify-center items-center">
         <DotLottieReact
@@ -17,17 +17,17 @@ export default function DoctorsIntroSection() {
       </div>
 
       {/* Right Side - Text About Doctors */}
-      <div className="md:w-1/2 space-y-6">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-purple-700 leading-snug">
+      <div className="md:w-1/2 lg:h-full px-5 lg:py-12 rounded-2xl space-y-6 bg-purple-500 text-white">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-white leading-snug">
           Meet Our Dedicated Doctors
         </h2>
-        <p className="text-gray-700 text-justify text-lg leading-relaxed mr-[100px]">
+        <p className="text-justify text-white leading-relaxed ">
           Our team of experienced and compassionate doctors is committed to helping 
           individuals overcome drug addiction and reclaim their lives. With personalized 
           care and professional guidance, we support every patient on their journey 
           to recovery.
         </p>
-        <p className="text-gray-700 text-justify text-lg leading-relaxed mr-[100px]">
+        <p className="text-gray-700 text-justify text-white leading-relaxed mr-[100px]">
           We specialize in evidence-based treatment methods, ensuring a safe and 
           supportive environment. Our doctors not only treat addiction but also 
           educate and empower patients to maintain long-term sobriety.
