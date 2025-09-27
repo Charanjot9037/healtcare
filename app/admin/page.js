@@ -54,12 +54,14 @@ const Dashboard = () => {
     fetchAppointments();
   }, []);
 
+  const router=useRouter();
     const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user");
     setUser(null);
     router.push("/login");
   };
+
 
   return (
     <div className="min-h-screen flex text-gray-800 bg-gray-100">
