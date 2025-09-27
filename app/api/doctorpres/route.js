@@ -22,6 +22,7 @@ console.log(prescription,id);
       id,
       {
         
+appointmentStatus:"Done",
 doctorreports:prescription          // make sure your schema has this field
       },
       { new: true } // return updated doc

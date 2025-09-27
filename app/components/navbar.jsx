@@ -56,31 +56,31 @@ const Navbar = () => {
             href="/userappnt"
             className="hover:text-yellow-300 transition-colors duration-200"
           >
-            Appointments
+            APPOINTMENSTS
           </Link>
           <Link
             href="/userreport"
             className="hover:text-yellow-300 transition-colors duration-200"
           >
-            Reports
+            DOCUMENTS
           </Link>
 
           {user ? (
             <div className="flex items-center space-x-4">
               <span className="font-medium text-yellow-200">
-                Hello, {user.name}
+                Hi, {user.name}
               </span>
               <button
                 onClick={handleLogout}
                 className="bg-gray-200 text-purple-900 font-medium px-4 py-2 rounded-lg shadow-sm hover:bg-gray-300 transition duration-200"
               >
-                Logout
+                LoGOUT
               </button>
             </div>
           ) : (
             <Link
               href="/login"
-              className="bg-yellow-400 text-purple-900 font-medium px-4 py-2 rounded-lg hover:bg-yellow-300 transition duration-200 shadow-sm"
+              className="bg-white text-purple-900 font-medium px-4 py-2 rounded-lg hover:bg-gray-600 hover:text-white transition duration-200 shadow-sm"
             >
               Login
             </Link>

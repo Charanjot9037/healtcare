@@ -290,7 +290,7 @@ export default function DoctorLandingPage() {
                           )}
                         </td>
                         <td className="py-3 px-6">
-                          {appt.appointmentStatus === "confirm" ? (
+                          {/* {appt.appointmentStatus === "confirm" ? (
                             <button
                               onClick={() => router.push(appt.meetinglink)}
                               className="px-3 py-1 bg-blue-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition"
@@ -312,7 +312,38 @@ export default function DoctorLandingPage() {
                             >
                               Create
                             </button>
-                          )}
+                          )} */}
+                          {appt.appointmentStatus === "confirm" ? (
+  <button
+    onClick={() => router.push(appt.meetinglink)}
+    className="px-3 py-1 bg-blue-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition"
+  >
+    Join
+  </button>
+) : appt.appointmentStatus == "Done" ? (
+  <button
+    disabled
+    className="px-3 py-1 bg-gray-400 text-white rounded-lg shadow-md cursor-not-allowed"
+  >
+    Done
+  </button>
+) : (
+  <button
+    onClick={() => {
+      setSelectedPatient({
+        id: appt._id,
+        time: appt.appointmentTime,
+        patientName: appt.firstName,
+        status: appt.status,
+      });
+      setShowModal(true);
+    }}
+    className="px-3 py-1 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600 transition"
+  >
+    Create
+  </button>
+)}
+
                         </td>
 
                         <td className="py-3 px-6">
