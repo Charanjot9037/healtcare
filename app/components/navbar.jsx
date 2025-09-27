@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 
+
 const Navbar = () => {
   const router = useRouter();
   const [user, setUser] = useState(null);
