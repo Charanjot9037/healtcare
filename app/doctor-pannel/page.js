@@ -19,13 +19,10 @@ export default function DoctorLandingPage() {
   const [filter, setFilter] = useState("All");
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [showModal, setShowModal] = useState(false);
-<<<<<<< HEAD
-=======
 
   const router = useRouter();
->>>>>>> 6cb0c249dab5b8a5235af0d3a713fa4cc6f9c15d
 
-  const router = useRouter();
+  
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -129,48 +126,6 @@ export default function DoctorLandingPage() {
 
   const fileInputRef = useRef(null);
   return (
-<<<<<<< HEAD
-    <div className="min-h-screen  bg-gradient-to-br from-white via-purple-100 to-purple-200 flex flex-col items-center justify-start p-6 md:p-1">
-       {user ? (
-            <div className="flex items-center space-x-4">
-              <span className="font-medium text-yellow-200">
-                Hello, {user.name}
-              </span>
-              <button
-                onClick={handleLogout}
-                className="bg-gray-200 text-purple-900 font-medium px-4 py-2 rounded-lg shadow-sm hover:bg-gray-300 transition duration-200"
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
-            <Link
-              href="/login"
-              className="bg-yellow-400 text-purple-900 font-medium px-4 py-2 rounded-lg hover:bg-yellow-300 transition duration-200 shadow-sm"
-            >
-              Login
-            </Link>
-          )}
-
-      {/* Header */}
-      {!showModal && (
-        <div className=" w-full  bg-white backdrop-blur-xl shadow-2xl  p-8 md:p-12 border border-purple-200 transition-all duration-500">
-          <header className="mb-8 text-center ">
-            <h1 className="text-4xl font-bold text-purple-700 mb-2"> 
-              {app?.[0]?.doctorName || "Doctor Name"} 
-            </h1>
-            <p className="text-purple-600 text-lg">Today's Appointments</p>
-          </header>
-
-          {/* Search & Filter */}
-          <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
-            <input
-              type="text"
-              placeholder="🔍 Search by name, reason, or status..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="px-4 py-2 border border-purple-300 rounded-xl shadow-sm w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-=======
     <div className="h-screen flex">
       {/* Sidebar Dashboard */}
       <aside className="w-72 pt-4 bg-purple-700 text-white flex flex-col  px-4 shadow-2xl">
@@ -180,125 +135,10 @@ export default function DoctorLandingPage() {
               src={doctorData.imageUrl}
               alt="Doctor Profile"
               className="w-28 h-28 rounded-full border-4 border-white shadow-lg object-cover"
->>>>>>> 6cb0c249dab5b8a5235af0d3a713fa4cc6f9c15d
             />
           ) : (
-<<<<<<< HEAD
-            <div className="overflow-x-auto">
-              <table className="w-full border-separate border-spacing-y-3">
-                <thead>
-                  <tr className="text-sm uppercase tracking-wide text-purple-700">
-                    <th className="text-left py-3 px-6">Time</th>
-                    <th className="text-left py-3 px-6">Patient</th>
-                    <th className="text-left py-3 px-6">Date</th>
-                    <th className="text-left py-3 px-6">Status</th>
-                    <th className="text-left py-3 px-6">Test Reports</th>
-                    <th className="text-left py-3 px-6">Meeting</th>
-                    <th className="text-left py-3 px-6">Add Prescription</th>
-                      <th className="text-left py-3 px-6">Write  Prescription</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {app.map((appt, idx) => (
-                    <tr
-                      key={appt._id || idx}
-                      className={`bg-white shadow-md rounded-xl transition transform duration-500 hover:scale-[1.02]`}
-                      style={{ transitionDelay: `${idx * 100}ms` }}
-                    >
-                      <td className="py-3 px-6 font-semibold">{appt.appointmentTime}</td>
-                      <td className="py-3 px-6">{appt.firstName}</td>
-                      <td className="py-3 px-6 italic">{appt.appointmentDate}</td>
-                      <td className="py-3 px-6">
-                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${statusColor(appt.status)}`}>
-                          {appt.status}
-                        </span>
-                      </td>
-                      <td className="py-3 px-6">
-                        {appt?.reports?.length === 0 ? (
-                          <p className="text-gray-500">No reports</p>
-                        ) : (
-                          <select
-                            onChange={handleReportClick}
-                            className="p-2 border rounded-lg shadow-sm w-full"
-                          >
-                            <option value="">View Report</option>
-                            {appt.reports.map((link, i) => (
-                              <option key={i} value={link}>Report {i + 1}</option>
-                            ))}
-                          </select>
-                        )}
-                      </td>
-                      <td className="py-3 px-6">
-                        {appt.appointmentStatus === "confirm" ? (
-                          <button
-                            onClick={() => router.push(appt.meetinglink)}
-                            className="px-3 py-1 bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition"
-                          >
-                            Join
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => {
-                              setSelectedPatient({
-                                id: appt._id,
-                                time: appt.appointmentTime,
-                                patientName: appt.firstName,
-                                status: appt.status,
-                              });
-                              setShowModal(true);
-                            }}
-                            className="px-3 py-1 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600 transition"
-                          >
-                            Create
-                          </button>
-                        )}
-                      </td>
-                      <td className="py-3 px-6">
-                        <input
-                          type="file"
-                          accept="image/*,application/pdf"
-                          onChange={async (e) => {
-                            const file = e.target.files?.[0];
-                            if (!file) return;
-                            setLoading(true);
-                            try {
-                              const url = await uploadToCloudinary(file);
-                              setDoctorRep(url);
-                              const res = await fetch("/api/doctorpres", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ id: appt._id, prescription: url }),
-                              });
-                              if (!res.ok) throw new Error("Failed to save report");
-                              alert("Report submitted successfully!");
-                            } catch (err) {
-                              console.error(err);
-                              alert("Error uploading report");
-                            } finally {
-                              setLoading(false);
-                            }
-                          }}
-                          className="mt-2 w-full text-sm"
-                        />
-                      </td>
-                      <td className="py-3 px-6">
-                      
-                       <button 
-                       className="px-3 py-1 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600 transition"
-                        onClick={()=>{
-                        const id=appt?._id;
-                      
-                        router.push(`/prescription/${id}`)
-                        }}>write</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-=======
             <div className="w-28 h-28 rounded-full bg-purple-500 flex items-center justify-center text-xl font-bold">
               DR
->>>>>>> 6cb0c249dab5b8a5235af0d3a713fa4cc6f9c15d
             </div>
           )}
           <h2 className="text-2xl font-bold mt-4">Doctor Panel</h2>

@@ -110,11 +110,11 @@ const Page = () => {
                 <th className="py-3 px-5">Time</th>
                 <th className="py-3 px-5">Status</th>
                 <th className="py-3 px-5">Meeting</th>
-                  
-                     <th className="py-3 px-5">submitted Reports</th>
+
+                <th className="py-3 px-5">submitted Reports</th>
               </tr>
             </thead>
-            <tbody >
+            <tbody>
               {app?.map((pat, index) => (
                 <tr
                   key={index}
@@ -158,8 +158,8 @@ const Page = () => {
 
                   {/* Join Button */}
                   <td className="px-5">
-                    <Link
-                      disabled={pat.appointmentStatus !== "confirm"}
+                    {/* <Link
+                      disabled={pat?.appointmentStatus !== "confirm"}
                       href={pat?.meetinglink}
                       className={`px-4 py-1.5 rounded-lg text-sm font-medium shadow-md transition
                         ${
@@ -169,29 +169,44 @@ const Page = () => {
                         }`}
                     >
                       Join
-                    </Link>
+                    </Link> */}
+                    {pat?.appointmentStatus === "confirm" &&
+                    pat?.meetinglink ? (
+                      <Link
+                        href={pat.meetinglink}
+                        className="px-4 py-1.5 rounded-lg text-sm font-medium shadow-md bg-purple-600 text-white hover:bg-purple-700 transition"
+                      >
+                        Join
+                      </Link>
+                    ) : (
+                      <button
+                        disabled
+                        className="px-4 py-1.5 rounded-lg text-sm font-medium shadow-md bg-gray-300 text-gray-500 cursor-not-allowed"
+                      >
+                        Join
+                      </button>
+                    )}
                   </td>
-                 
+
                   <td>
                     <select
-                            onChange={(e) => {
-                              const link = e.target.value;
-                              if (link) window.open(link, "_blank"); // Opens the image in a new tab
-                            }}
-                            className="px-3 py-1 text-gray-700 border border-purple-300 shadow-sm"
-                          >
-                            <option value="">View Report</option>
-                            {Array.isArray(pat.reports) &&
-                            pat.reports.length > 0 ? (
-                              pat.reports.map((link, i) => (
-                                <option key={i} value={link}>
-                                  Report {i + 1}
-                                </option>
-                              ))
-                            ) : (
-                              <option value="">No reports</option>
-                            )}
-                          </select>
+                      onChange={(e) => {
+                        const link = e.target.value;
+                        if (link) window.open(link, "_blank"); // Opens the image in a new tab
+                      }}
+                      className="px-3 py-1 text-gray-700 border border-purple-300 shadow-sm"
+                    >
+                      <option value="">View Report</option>
+                      {Array.isArray(pat.reports) && pat.reports.length > 0 ? (
+                        pat.reports.map((link, i) => (
+                          <option key={i} value={link}>
+                            Report {i + 1}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="">No reports</option>
+                      )}
+                    </select>
                   </td>
                 </tr>
               ))}
